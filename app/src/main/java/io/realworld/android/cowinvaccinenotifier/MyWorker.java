@@ -10,13 +10,18 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
+import io.paperdb.Paper;
 
 public class MyWorker extends Worker {
     public MyWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -26,6 +31,15 @@ public class MyWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+//        Paper.init(getApplicationContext());
+//        List<String> test = Paper.book().read("test1", new ArrayList<>());
+//        String testT = "Ayan";
+//        test.add(testT);
+//        Paper.book().write("test1", test);
+//        List<String> testD = Paper.book().read("test1");
+//        for(int i=0; i<testD.size(); i++){
+//            Log.d("test", testD.get(i));
+//        }
         displayNotification("Task", "Testing is going on");
         return Result.success();
     }
@@ -52,7 +66,7 @@ public class MyWorker extends Worker {
 
         Random r = new Random();
         manager.notify(r.nextInt(), notification);
-        playNotificationSound();
+//        playNotificationSound();
 
     }
 
