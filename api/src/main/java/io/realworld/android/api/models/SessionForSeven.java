@@ -60,4 +60,27 @@ public class SessionForSeven {
 	public int getAvailableCapacityDose1(){
 		return availableCapacityDose1;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		// If the object is compared with itself then return true
+		if (o == this) {
+			return true;
+		}
+
+        /* Check if o is an instance of Complex or not
+          "null instanceof [type]" also returns false */
+		if (!(o instanceof Center)) {
+			return false;
+		}
+
+		// typecast o to Complex so that we can compare data members
+		SessionForSeven c = (SessionForSeven) o;
+
+		if((c.availableCapacity <= availableCapacity) && (c.availableCapacityDose1 <= availableCapacityDose1) &&
+				(c.availableCapacityDose2 <= availableCapacityDose2)){
+			return true;
+		}
+		return false;
+	}
 }
