@@ -8,7 +8,7 @@ public class State {
 	private String stateName;
 
 	@SerializedName("state_id")
-	private int stateId;
+	private long stateId;
 
 	@SerializedName("state_name_l")
 	private String stateNameL;
@@ -17,7 +17,7 @@ public class State {
 		return stateName;
 	}
 
-	public int getStateId(){
+	public long getStateId(){
 		return stateId;
 	}
 

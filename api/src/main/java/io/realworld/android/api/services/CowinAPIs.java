@@ -19,20 +19,20 @@ public interface CowinAPIs {
 
     @GET("admin/location/districts/{state_id}")
     Call<DistrictsResponse> getDistricts(
-            @Path("state_id") int state_id ,
+            @Path("state_id") long state_id ,
             @Header("User-Agent") String token
     );
 
     @GET("appointment/sessions/public/findByDistrict")
     Call<AppointmentsResponse> getAppointmentsByDistrict(
-            @Query("district_id") int district_id ,
+            @Query("district_id") long district_id ,
             @Query("date") String date,
             @Header("User-Agent") String token
     );
 
     @GET("appointment/sessions/public/calendarByDistrict")
     Call<AppointmentsForSevenResponse> getAppointmentsForSeven(
-            @Query("district_id") int district_id,
+            @Query("district_id") long district_id,
             @Query("date") String date,
             @Header("User-Agent") String token
     );

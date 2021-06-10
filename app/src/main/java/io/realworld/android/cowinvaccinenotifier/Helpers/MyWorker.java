@@ -1,4 +1,4 @@
-package io.realworld.android.cowinvaccinenotifier;
+package io.realworld.android.cowinvaccinenotifier.Helpers;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -26,13 +26,14 @@ import io.realworld.android.api.CowinClient;
 import io.realworld.android.api.models.AppointmentsForSevenResponse;
 import io.realworld.android.api.models.Center;
 import io.realworld.android.api.models.SessionForSeven;
+import io.realworld.android.cowinvaccinenotifier.Data.Alert;
+import io.realworld.android.cowinvaccinenotifier.R;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MyWorker extends Worker {
     Context context;
-    private final String user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36";
 
     private final CowinClient cowinClient = new CowinClient();
 
@@ -50,8 +51,8 @@ public class MyWorker extends Worker {
 
         List<Alert> alerts = new ArrayList<>();
 
-        int district = 141;
-        String date = "08-06-2021";
+        int district = 712;
+        String date = "07-06-2021";
         String code = String.valueOf(district);
         List<Integer> ages = new ArrayList<>();
         ages.add(18);
@@ -59,6 +60,7 @@ public class MyWorker extends Worker {
         List<Integer> doses = new ArrayList<>();
         doses.add(1);
         doses.add(2);
+        String user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36";
         Call<AppointmentsForSevenResponse> call = cowinClient.api
                 .getAppointmentsForSeven(district, date, user_agent);
         call.enqueue(new Callback<AppointmentsForSevenResponse>() {

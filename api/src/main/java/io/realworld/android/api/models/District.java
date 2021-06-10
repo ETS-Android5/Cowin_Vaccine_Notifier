@@ -11,10 +11,10 @@ public class District {
 	private String districtNameL;
 
 	@SerializedName("state_id")
-	private int stateId;
+	private long stateId;
 
 	@SerializedName("district_id")
-	private int districtId;
+	private long districtId;
 
 	public String getDistrictName(){
 		return districtName;
@@ -24,11 +24,11 @@ public class District {
 		return districtNameL;
 	}
 
-	public int getStateId(){
+	public long getStateId(){
 		return stateId;
 	}
 
-	public int getDistrictId(){
+	public long getDistrictId(){
 		return districtId;
 	}
 }

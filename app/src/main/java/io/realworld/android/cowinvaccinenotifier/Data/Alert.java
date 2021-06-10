@@ -1,4 +1,4 @@
-package io.realworld.android.cowinvaccinenotifier;
+package io.realworld.android.cowinvaccinenotifier.Data;
 
 
 public class Alert {
