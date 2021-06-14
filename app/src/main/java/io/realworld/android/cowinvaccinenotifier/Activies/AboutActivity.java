@@ -41,25 +41,4 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
     }
-
-    public static boolean isValidUrl (String link) {
-
-        if (link.trim().isEmpty()) 	return false;
-        else if (!URLUtil.isNetworkUrl(link)) return false;
-        else if (!Patterns.WEB_URL.matcher(link).matches()) return false;
-        else return HttpUrl.parse(link) != null;
-
-    }
-
-    public static void openLink(final Context context, final String link) {
-
-        if (isValidUrl(link)) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-            context.startActivity(Intent.createChooser(browserIntent, "Select the app to open the link"));
-        } else {
-            Toast.makeText(context, "Link is invalid", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
 }

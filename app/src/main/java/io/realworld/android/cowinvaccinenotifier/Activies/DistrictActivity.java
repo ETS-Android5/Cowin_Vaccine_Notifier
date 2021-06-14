@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +82,7 @@ public class DistrictActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
                 searchView.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), "Network Failure! Please check your internet connection and retry", Toast.LENGTH_SHORT).show();
             }
         });
     }

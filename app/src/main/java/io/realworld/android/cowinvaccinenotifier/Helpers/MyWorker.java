@@ -420,7 +420,8 @@ public class MyWorker extends Worker {
 
                 @Override
                 public void onFailure(Call<AppointmentsForSevenResponse> call, Throwable t) {
-                    Toast.makeText(context, "Failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Network Failure! Please check your internet connection and retry", Toast.LENGTH_SHORT).show();
+
                 }
             });
             HashMap<String, List<Center>> testD = Paper.book().read("test31");
