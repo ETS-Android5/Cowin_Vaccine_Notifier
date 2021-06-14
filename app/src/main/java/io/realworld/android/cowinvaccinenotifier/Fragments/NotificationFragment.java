@@ -84,8 +84,6 @@ public class NotificationFragment extends Fragment {
         fab_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_LONG).show();
-
 
                 if( alerts.size() > 0) {
 

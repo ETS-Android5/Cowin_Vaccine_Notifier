@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .build();
 
             WorkManager.getInstance().enqueue(request);
-            Toast.makeText(this, "Background Work re-started", Toast.LENGTH_LONG).show();
+
         } else {
             Constraints constraints = new Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
