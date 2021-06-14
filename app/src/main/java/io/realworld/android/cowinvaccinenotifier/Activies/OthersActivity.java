@@ -6,8 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import io.realworld.android.cowinvaccinenotifier.R;
 public class OthersActivity extends AppCompatActivity {
 
     long districtId;
-    MaterialButton done;
+    FloatingActionButton done;
     String state, district;
     TextView placename;
     CheckBox group_18_44, group_45;
@@ -59,13 +60,28 @@ public class OthersActivity extends AppCompatActivity {
                 doses.add(1);
             }
             Subscription subscription = new Subscription(state, district, districtId, ages, doses);
-            subscriptions.add(subscription);
-            Paper.book().write("subscription", subscriptions);
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+            if(contains(subscriptions, subscription)) {
+                Toast.makeText(this, "This subscription is all ready added in the list", Toast.LENGTH_LONG).show();
+            } else {
+                subscriptions.add(subscription);
+                Paper.book().write("subscription", subscriptions);
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
         });
 
+    }
+
+    private boolean contains(List<Subscription> subscriptions, Subscription subscription){
+        for (int i = 0; i < subscriptions.size(); i++){
+            if((subscriptions.get(i).getDistrictId() == subscription.getDistrictId()) &&
+                    (subscriptions.get(i).getAges().equals(subscription.getAges())) &&
+                    (subscriptions.get(i).getDoses().equals(subscription.getDoses()))){
+                return true;
+            }
+        }
+        return false;
     }
 
     private void Init() {

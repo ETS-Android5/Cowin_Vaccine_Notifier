@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_500"
+    android:background="@drawable/lyout_gradient"
     tools:context=".Fragments.HomeFragment">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/home"
         style="@style/TextAppearance.MaterialComponents.Headline4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/purple_500"
+        android:background="@drawable/lyout_gradient"
         android:paddingStart="15dp"
-        android:paddingTop="20dp"
+        android:paddingTop="15dp"
         android:paddingEnd="15dp"
         android:paddingBottom="5dp"
         android:text="Home"
@@ -25,11 +25,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/place_name"
+        android:id="@+id/msg"
         style="@style/TextAppearance.MaterialComponents.Headline4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/purple_500"
+        android:background="@drawable/lyout_gradient"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
         android:paddingBottom="20dp"
@@ -38,7 +38,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/home" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
@@ -47,47 +47,71 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/place_name">
+        app:layout_constraintTop_toBottomOf="@+id/msg">
 
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/list_subscriptions"
             style="@style/TextAppearance.MaterialComponents.Headline4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="32dp"
             android:gravity="center"
             android:text="Your Subscriptions"
-            android:textColor="@color/purple_500"
+            android:textColor="@color/color_primary"
             android:textSize="28sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/home_recycler_view"
+            android:id="@+id/subscription_recycler_view"
             android:layout_width="0dp"
             android:visibility="invisible"
             android:layout_height="0dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintTop_toBottomOf="@+id/list_subscriptions" />
 
         <TextView
             android:id="@+id/no_subs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="No Subscriptions Yet"
-            android:textColor="@color/purple_500"
+            android:textColor="@color/color_primary"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@id/home_recycler_view"
-            app:layout_constraintEnd_toEndOf="@+id/home_recycler_view"
-            app:layout_constraintStart_toStartOf="@+id/home_recycler_view"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/subscription_recycler_view"
+            app:layout_constraintStart_toStartOf="@+id/subscription_recycler_view"
+            app:layout_constraintTop_toBottomOf="@+id/list_subscriptions" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add"
+        android:id="@+id/fab"
+        android:backgroundTint="#FFE600"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/info"
+        app:fabSize="mini"
+        android:elevation="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_info" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

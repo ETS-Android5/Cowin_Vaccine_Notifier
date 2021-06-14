@@ -7,11 +7,11 @@
     tools:context=".Activies.OthersActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/other_choose"
         style="@style/TextAppearance.MaterialComponents.Headline4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/purple_500"
+        android:background="@drawable/lyout_gradient"
         android:paddingStart="15dp"
         android:paddingTop="20dp"
         android:paddingEnd="15dp"
@@ -28,7 +28,7 @@
         style="@style/TextAppearance.MaterialComponents.Headline4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/purple_500"
+        android:background="@drawable/lyout_gradient"
         android:paddingStart="18dp"
         android:paddingEnd="15dp"
         android:paddingBottom="20dp"
@@ -37,7 +37,7 @@
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/other_choose" />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -56,7 +56,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="20dp"
             android:text="Choose Age Group(s)"
-            android:textColor="@color/purple_700"
+            android:textColor="@color/color_primary_dark"
             android:textSize="28sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -89,10 +89,10 @@
             style="@style/TextAppearance.MaterialComponents.Headline4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Choose Dose(s)"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/purple_700"
             android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:text="Choose Dose(s)"
+            android:textColor="@color/color_primary_dark"
             android:textSize="28sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/group_45" />
@@ -120,22 +120,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dose1" />
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/done"
-            android:backgroundTint="@color/teal_200"
-            android:paddingLeft="27dp"
-            android:paddingTop="8dp"
-            android:paddingRight="27dp"
-            android:paddingBottom="8dp"
-            android:text="done"
-            android:textSize="24sp"
-            app:elevation="8dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/baseline_arrow_forward_white_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dose2" />
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

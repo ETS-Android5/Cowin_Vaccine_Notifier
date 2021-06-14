@@ -1,7 +1,6 @@
 package io.realworld.android.cowinvaccinenotifier.Adapters;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -14,9 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.HashMap;
 import java.util.List;
 
 import io.paperdb.Paper;
+import io.realworld.android.api.models.Center;
+import io.realworld.android.cowinvaccinenotifier.Data.Alert;
 import io.realworld.android.cowinvaccinenotifier.Data.Subscription;
 import io.realworld.android.cowinvaccinenotifier.R;
 
@@ -83,9 +85,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
                         .setMessage("Are you sure want to unsubscribe this task?")
                         .setCancelable(false)
                         .setPositiveButton("Delete", (dialog, which) -> {
+                            long code = subscription.getDistrictId();
                             subscriptions.remove(subscription);
                             Paper.init(context);
                             Paper.book().write("subscription", subscriptions);
+                            HashMap<String, List<Center> > centers = Paper.book().read("test31", new HashMap<>());
+                            centers.remove(String.valueOf(code));
+                            Paper.book().write("test31", centers);
                             notifyDataSetChanged();
                             dialog.dismiss();
                         })

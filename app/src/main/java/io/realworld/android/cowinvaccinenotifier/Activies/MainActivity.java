@@ -31,6 +31,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.concurrent.TimeUnit;
 
 import io.paperdb.Paper;
+import io.realworld.android.cowinvaccinenotifier.Helpers.CurvedBottomNavigationView;
 import io.realworld.android.cowinvaccinenotifier.Helpers.MyWorker;
 import io.realworld.android.cowinvaccinenotifier.R;
 
@@ -38,13 +39,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final String TAG = "MainActivity";
     public NavController mNavController;
-    public BottomAppBar mBottomAppBar;
+//    public BottomAppBar mBottomAppBar;
     public DrawerLayout mDrawerLayout;
-    public FloatingActionButton fab;
     public Toolbar mToolbar;
     public NavOptions.Builder leftToRightBuilder, rightToLeftBuilder;
     private AppBarConfiguration mAppBarConfiguration;
-    private BottomNavigationView mBottomNavigationView;
+    private CurvedBottomNavigationView mBottomNavigationView;
     private NavigationView mNavigationView;
 
     @Override
@@ -81,23 +81,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             WorkManager.getInstance().enqueue(request);
             Paper.book().write("work_start", true);
-            Toast.makeText(this, "Background Work Started", Toast.LENGTH_LONG).show();
         }
 
-        fab.setOnClickListener(v -> {
-
-            Intent intent = new Intent(MainActivity.this, StateActivity.class);
-            startActivity(intent);
-
-        });
+//        fab.setOnClickListener(v -> {
+//            Toast.makeText(this, "Clicked", Toast.LENGTH_LONG).show();
+//
+//            Intent intent = new Intent(MainActivity.this, StateActivity.class);
+//            startActivity(intent);
+//
+//        });
 
     }
 
     private void Init() {
         Paper.init(this);
         mBottomNavigationView = findViewById(R.id.bottom_nav_view);
-        mBottomAppBar = findViewById(R.id.bottom_app_bar);
-        fab = findViewById(R.id.fab);
+//        mBottomAppBar = findViewById(R.id.bottom_app_bar);
+//        fab = findViewById(R.id.fab);
 
         //set up navigation
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -118,28 +118,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        Log.d(TAG, "onSupportNavigateUp: starts");
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
+    }
+
+    @Override
     public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
         Log.d(TAG, "onDestinationChanged: starts");
-        fab.setOnClickListener(null);
+//        fab.setOnClickListener(null);
         switch (destination.getId()) {
             case R.id.nav_home:
-                mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-                mBottomAppBar.setVisibility(View.VISIBLE);
-                mBottomAppBar.performShow();
-                mBottomAppBar.bringToFront();
+//                mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+//                mBottomAppBar.setVisibility(View.VISIBLE);
+//                mBottomAppBar.performShow();
+//                mBottomAppBar.bringToFront();
 
-                fab.show();
-                fab.setImageResource(R.drawable.ic_add);
-                fab.setVisibility(View.VISIBLE);
+//                fab.show();
+//                fab.setImageResource(R.drawable.ic_add);
+//                fab.setVisibility(View.VISIBLE);
                 break;
             case R.id.nav_notification:
-                fab.show();
-                fab.setVisibility(View.VISIBLE);
-                fab.setImageResource(R.drawable.ic_add);
-                mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-                mBottomAppBar.setVisibility(View.VISIBLE);
-                mBottomAppBar.performShow();
-                mBottomAppBar.bringToFront();
+//                fab.show();
+//                fab.setVisibility(View.VISIBLE);
+//                fab.setImageResource(R.drawable.ic_add);
+//                mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+//                mBottomAppBar.setVisibility(View.VISIBLE);
+//                mBottomAppBar.performShow();
+//                mBottomAppBar.bringToFront();
                 break;
             default:
                 break;

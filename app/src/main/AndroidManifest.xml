@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CowinVaccineNotifier">
-        <activity android:name=".Activies.OthersActivity"></activity>
+        <activity android:name=".Activies.AboutActivity"></activity>
+        <activity android:name=".Activies.OthersActivity" />
         <activity android:name=".Activies.DistrictActivity" />
         <activity android:name=".Activies.StateActivity" />
         <activity android:name=".Activies.MainActivity">

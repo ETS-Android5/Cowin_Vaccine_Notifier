@@ -17,14 +17,14 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/place_name" />
+        app:layout_constraintTop_toBottomOf="@+id/place_name_district" />
 
     <TextView
         android:id="@+id/textView"
         style="@style/TextAppearance.MaterialComponents.Headline4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/purple_500"
+        android:background="@drawable/lyout_gradient"
         android:paddingStart="15dp"
         android:paddingTop="20dp"
         android:paddingEnd="15dp"
@@ -37,11 +37,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/place_name"
+        android:id="@+id/place_name_district"
         style="@style/TextAppearance.MaterialComponents.Headline4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/purple_500"
+        android:background="@drawable/lyout_gradient"
         android:paddingStart="18dp"
         android:paddingEnd="15dp"
         android:paddingBottom="20dp"

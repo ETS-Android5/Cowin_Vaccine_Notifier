@@ -89,7 +89,7 @@ public class DistrictActivity extends AppCompatActivity {
         Paper.init(this);
         progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.recyclerView);
-        stateName = findViewById(R.id.place_name);
+        stateName = findViewById(R.id.place_name_district);
         searchView = findViewById(R.id.searchView);
 
         state = getIntent().getExtras().getString("state");
