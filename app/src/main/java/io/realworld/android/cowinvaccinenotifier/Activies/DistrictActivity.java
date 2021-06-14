@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -55,6 +56,19 @@ public class DistrictActivity extends AppCompatActivity {
         recyclerView.setAdapter(selectDistrictAdapter);
 
         showDistricts();
+
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                selectDistrictAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 
     private void showDistricts() {

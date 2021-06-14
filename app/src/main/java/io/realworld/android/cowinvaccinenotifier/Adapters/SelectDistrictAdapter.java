@@ -5,25 +5,30 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realworld.android.api.models.District;
 import io.realworld.android.cowinvaccinenotifier.Activies.OthersActivity;
 import io.realworld.android.cowinvaccinenotifier.R;
 
-public class SelectDistrictAdapter extends RecyclerView.Adapter<SelectDistrictAdapter.SelectViewHolder>{
+public class SelectDistrictAdapter extends RecyclerView.Adapter<SelectDistrictAdapter.SelectViewHolder> implements Filterable {
 
     List<District> districts;
+    private List<District> exampleListFull;
     Context context;
     String state;
 
     public void setDistricts(List<District> districts) {
         this.districts = districts;
+        exampleListFull = new ArrayList<>(districts);
         notifyDataSetChanged();
     }
 
@@ -58,6 +63,36 @@ public class SelectDistrictAdapter extends RecyclerView.Adapter<SelectDistrictAd
     public int getItemCount() {
         return districts.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return exampleFilter;
+    }
+    private Filter exampleFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<District> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(exampleListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (District item : exampleListFull) {
+                    if (item.getDistrictName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            districts.clear();
+            districts.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public class SelectViewHolder extends RecyclerView.ViewHolder {
 
