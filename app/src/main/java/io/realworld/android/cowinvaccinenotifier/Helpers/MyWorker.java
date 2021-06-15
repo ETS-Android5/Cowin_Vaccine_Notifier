@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.graphics.Color;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -316,7 +317,7 @@ public class MyWorker extends Worker {
                             }
                         }
                         if (count > 0) {
-                            displayNotification("Vaccine Available",
+                            displayNotification("Vaccine Available!",
                                     count + " new centers in " +
                                             newCenterList.get(0).getDistrictName() + " are available for vaccination ");
                             Log.d("testo", "no notifi");
@@ -496,7 +497,8 @@ public class MyWorker extends Worker {
                 .setAutoCancel(true)
                 .setPriority(Notification.PRIORITY_HIGH)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setSmallIcon(R.drawable.ic_launcher_background);
+                .setColor(Color.WHITE)
+                .setSmallIcon(R.drawable.ic_notification);
 
         Notification notification = builder.setStyle(new NotificationCompat.BigTextStyle()
                 .bigText(desc))
