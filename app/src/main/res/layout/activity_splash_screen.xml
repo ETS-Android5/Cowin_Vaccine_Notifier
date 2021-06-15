@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/lyout_gradient"
+    tools:context=".Activies.SplashScreenActivity">
+
+    <ImageView
+        android:id="@+id/design"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/design" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="234dp"
+        android:layout_height="277dp"
+        android:layout_marginStart="89dp"
+        android:layout_marginTop="105dp"
+        android:layout_marginEnd="88dp"
+        android:layout_marginBottom="118dp"
+        app:layout_constraintBottom_toBottomOf="@+id/design"
+        app:layout_constraintEnd_toEndOf="@+id/design"
+        app:layout_constraintStart_toStartOf="@+id/design"
+        app:layout_constraintTop_toTopOf="@+id/design"
+        app:srcCompat="@drawable/cvn" />
+
+    <TextView
+        android:id="@+id/logo_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/berkshire_swash"
+        android:text="Cowin Vaccine \n       Notifier"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
+
+    <TextView
+        android:id="@+id/quote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/antic"
+        android:text="Get Vaccinated Soon"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_name" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
