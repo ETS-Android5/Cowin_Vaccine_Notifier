@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CowinVaccineNotifier">
+        <activity android:name=".OnboardingActivity"></activity>
         <activity android:name=".Activies.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,8 +23,7 @@
         <activity android:name=".Activies.OthersActivity" />
         <activity android:name=".Activies.DistrictActivity" />
         <activity android:name=".Activies.StateActivity" />
-        <activity android:name=".Activies.MainActivity">
-        </activity>
+        <activity android:name=".Activies.MainActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"

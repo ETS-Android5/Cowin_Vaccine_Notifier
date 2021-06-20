@@ -33,7 +33,7 @@
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
         android:paddingBottom="20dp"
-        android:text="Add subscriptions by clicking the + icon"
+        android:text="Add locations by clicking the + icon"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

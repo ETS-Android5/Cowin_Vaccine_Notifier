@@ -3,6 +3,8 @@ package io.realworld.android.cowinvaccinenotifier.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,6 +86,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                             }).show();
                 }
             });
+
+            holder.link.setOnClickListener(v ->{
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://selfregistration.cowin.gov.in/"));
+                context.startActivity(browserIntent);
+            });
     }
 
     public <K, V> K getKey(HashMap<K, V> map, V value) {
@@ -111,6 +118,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         ImageView delete_alert;
         TextView dose_1;
         TextView dose_2;
+        TextView link;
 
         public NotificationViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -124,6 +132,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             fee_type = itemView.findViewById(R.id.fee_type);
             dose_1 = itemView.findViewById(R.id.avail_dose1);
             dose_2 = itemView.findViewById(R.id.avail_dose2);
+            link = itemView.findViewById(R.id.link);
         }
     }
 }

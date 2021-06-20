@@ -40,5 +40,13 @@ public class AboutActivity extends AppCompatActivity {
                 startActivity(browserIntent);
             }
         });
+
+        findViewById(R.id.MAILBOX).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:ayan10.dev@gmail.com"));
+                startActivity(browserIntent);
+            }
+        });
     }
 }
