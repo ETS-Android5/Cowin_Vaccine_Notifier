@@ -20,19 +20,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.concurrent.TimeUnit;
 
 import io.paperdb.Paper;
 import io.realworld.android.cowinvaccinenotifier.Helpers.CurvedBottomNavigationView;
-import io.realworld.android.cowinvaccinenotifier.Helpers.MyWorker;
+import io.realworld.android.cowinvaccinenotifier.Helpers.AlertWorker;
+import io.realworld.android.cowinvaccinenotifier.OnboardingActivity;
 import io.realworld.android.cowinvaccinenotifier.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener, NavController.OnDestinationChangedListener{
@@ -52,35 +49,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
-        Init();
 
-
-        if (Paper.book().read("work_start", false)) {
-            WorkManager.getInstance().cancelAllWorkByTag("work");
-
-            Constraints constraints = new Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .build();
-
-            PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(MyWorker.class, 15, TimeUnit.MINUTES)
-                    //.setConstraints(constraints)
-                    .addTag("work")
-                    .build();
-
-            WorkManager.getInstance().enqueue(request);
-
+        if (Paper.book().read("first", true)) {
+            Intent intent = new Intent(MainActivity.this, OnboardingActivity.class);
+            startActivity(intent);
+            finish();
         } else {
-            Constraints constraints = new Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .build();
 
-            PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(MyWorker.class, 15, TimeUnit.MINUTES)
-                    //.setConstraints(constraints)
-                    .addTag("work")
-                    .build();
+            Init();
 
-            WorkManager.getInstance().enqueue(request);
-            Paper.book().write("work_start", true);
+
+            if (Paper.book().read("work_start", false)) {
+                WorkManager.getInstance().cancelAllWorkByTag("work");
+
+                Constraints constraints = new Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build();
+
+                PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(AlertWorker.class, 15, TimeUnit.MINUTES)
+                        //.setConstraints(constraints)
+                        .addTag("work")
+                        .build();
+
+                WorkManager.getInstance().enqueue(request);
+
+            } else {
+                Constraints constraints = new Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build();
+
+                PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(AlertWorker.class, 15, TimeUnit.MINUTES)
+                        //.setConstraints(constraints)
+                        .addTag("work")
+                        .build();
+
+                WorkManager.getInstance().enqueue(request);
+                Paper.book().write("work_start", true);
+            }
+
         }
 
 //        fab.setOnClickListener(v -> {
@@ -90,6 +96,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            startActivity(intent);
 //
 //        });
+        Log.d(TAG, "onNavigationItemSelected: animations for opening fragment to right of current one");
+        leftToRightBuilder = new NavOptions.Builder();
+        leftToRightBuilder.setEnterAnim(R.anim.slide_in_right);
+        leftToRightBuilder.setExitAnim(R.anim.slide_out_left);
+        leftToRightBuilder.setPopEnterAnim(R.anim.slide_in_left);
+        leftToRightBuilder.setPopExitAnim(R.anim.slide_out_right);
+        leftToRightBuilder.setLaunchSingleTop(true);
+
+        Log.d(TAG, "onNavigationItemSelected: animations for opening fragment to left of current one");
+        rightToLeftBuilder = new NavOptions.Builder();
+        rightToLeftBuilder.setEnterAnim(R.anim.slide_in_left);
+        rightToLeftBuilder.setExitAnim(R.anim.slide_out_right);
+        rightToLeftBuilder.setPopEnterAnim(R.anim.slide_in_right);
+        rightToLeftBuilder.setPopExitAnim(R.anim.slide_out_left);
+        rightToLeftBuilder.setLaunchSingleTop(true);
 
     }
 
@@ -164,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Log.d(TAG, "onNavigationItemSelected: home selected");
                 if (mNavController.getCurrentDestination().getId() != R.id.nav_home) {
                     Log.d(TAG, "onNavigationItemSelected: opening home fragment");
-                    mNavController.navigate(R.id.nav_home);
+                    mNavController.navigate(R.id.nav_home, null, rightToLeftBuilder.build());
                 }
                 return true;
 
@@ -172,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Log.d(TAG, "onNavigationItemSelected: attendance selected");
                 if (mNavController.getCurrentDestination().getId() != R.id.nav_notification) {
                     Log.d(TAG, "onNavigationItemSelected: opening attendance fragment");
-                    mNavController.navigate(R.id.nav_notification);
+                    mNavController.navigate(R.id.nav_notification, null, leftToRightBuilder.build());
                 }
                 return true;
             default:

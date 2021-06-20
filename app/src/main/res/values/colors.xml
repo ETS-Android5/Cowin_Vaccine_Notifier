@@ -10,4 +10,7 @@
     <color name="eighteen">#F97918</color>
     <color name="old">#663B15</color>
     <color name="dose">#5CFF1F</color>
+    <color name="back_ground_add">#FF00FF</color>
+    <color name="back_ground_alert">#00FFE6</color>
+
 </resources>
