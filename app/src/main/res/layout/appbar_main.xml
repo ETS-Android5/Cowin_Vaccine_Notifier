@@ -6,36 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Activies.MainActivity">
 
-<!--    <com.google.android.material.bottomappbar.BottomAppBar-->
-<!--        android:id="@+id/bottom_app_bar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="bottom"-->
-<!--        android:backgroundTint="@color/color_primary_dark"-->
-<!--        app:fabCradleMargin="15dp"-->
-<!--        app:fabCradleVerticalOffset="7dp"-->
-<!--        app:fabCradleRoundedCornerRadius="20dp"-->
-<!--        app:fabAlignmentMode="center"-->
-<!--        app:fabAnimationMode="scale"-->
-<!--        >-->
-
-<!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
-<!--            android:id="@+id/bottom_nav_view"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@drawable/bottom_background_transparent"-->
-<!--            android:fitsSystemWindows="true"-->
-<!--            app:itemHorizontalTranslationEnabled="true"-->
-<!--            app:itemIconTint="@color/bottom_navigation_selector"-->
-<!--            app:itemRippleColor="@color/bottom_navigation_selector"-->
-<!--            app:itemTextColor="@color/bottom_navigation_selector"-->
-<!--            app:labelVisibilityMode="labeled"-->
-<!--            app:menu="@menu/bottom_menu"-->
-<!--            android:layout_marginEnd="15dp"/>-->
-
-<!--    </com.google.android.material.bottomappbar.BottomAppBar>-->
-
-    <io.realworld.android.cowinvaccinenotifier.Helpers.CurvedBottomNavigationView
+    <io.realworld.android.vaccineslotalert.Helpers.CurvedBottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/bottom_nav_view"

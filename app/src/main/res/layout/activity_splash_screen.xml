@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/berkshire_swash"
-        android:text="Cowin Vaccine \n       Notifier"
+        android:text="Vaccine Slot \n        Alert"
         android:textColor="#FFFFFF"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"

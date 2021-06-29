@@ -1,4 +1,4 @@
-package io.realworld.android.cowinvaccinenotifier.Adapters;
+package io.realworld.android.vaccineslotalert.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,9 +18,8 @@ import java.util.List;
 
 import io.paperdb.Paper;
 import io.realworld.android.api.models.Center;
-import io.realworld.android.cowinvaccinenotifier.Data.Alert;
-import io.realworld.android.cowinvaccinenotifier.Data.Subscription;
-import io.realworld.android.cowinvaccinenotifier.R;
+import io.realworld.android.vaccineslotalert.Data.Subscription;
+import io.realworld.android.vaccineslotalert.R;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder> {
     Context context;

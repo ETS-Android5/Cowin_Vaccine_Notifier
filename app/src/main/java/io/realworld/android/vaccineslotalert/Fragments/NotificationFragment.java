@@ -1,10 +1,9 @@
-package io.realworld.android.cowinvaccinenotifier.Fragments;
+package io.realworld.android.vaccineslotalert.Fragments;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,18 +18,13 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import io.paperdb.Paper;
-import io.realworld.android.api.models.Center;
-import io.realworld.android.cowinvaccinenotifier.Activies.MainActivity;
-import io.realworld.android.cowinvaccinenotifier.Activies.StateActivity;
-import io.realworld.android.cowinvaccinenotifier.Adapters.HomeAdapter;
-import io.realworld.android.cowinvaccinenotifier.Adapters.NotificationAdapter;
-import io.realworld.android.cowinvaccinenotifier.Data.Alert;
-import io.realworld.android.cowinvaccinenotifier.Data.Subscription;
-import io.realworld.android.cowinvaccinenotifier.R;
+import io.realworld.android.vaccineslotalert.Activies.StateActivity;
+import io.realworld.android.vaccineslotalert.Adapters.NotificationAdapter;
+import io.realworld.android.vaccineslotalert.Data.Alert;
+import io.realworld.android.vaccineslotalert.R;
 
 public class NotificationFragment extends Fragment {
 
@@ -39,7 +33,6 @@ public class NotificationFragment extends Fragment {
     TextView textView;
     private FloatingActionButton fab;
     private FloatingActionButton fab_delete;
-//    private MainActivity activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,20 +40,7 @@ public class NotificationFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_notification, container, false);
         Init(root);
-//        activity = (MainActivity) requireActivity();
-//        activity.mBottomAppBar.bringToFront();
-//        activity.fab.bringToFront();
 
-//        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-//            @Override
-//            public void handleOnBackPressed() {
-//                fab.setOnClickListener(null);
-//                activity.mNavController.navigate(R.id.action_notificationFragment_to_homeFragment);
-//            }
-//        });
-//
-//        fab = activity.fab;
-//        fab.show();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,22 +90,6 @@ public class NotificationFragment extends Fragment {
         });
         return root;
     }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        activity.mBottomAppBar.performShow();
-//        activity.mBottomAppBar.setVisibility(View.VISIBLE);
-//        activity.mBottomAppBar.bringToFront();
-//        activity.fab.show();
-//        activity.fab.bringToFront();
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        fab.setEnabled(true);
-//        super.onPause();
-//    }
 
     private void Init(View view) {
         Paper.init(view.getContext());

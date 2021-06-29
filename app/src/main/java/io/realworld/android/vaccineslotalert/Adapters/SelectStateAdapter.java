@@ -1,4 +1,4 @@
-package io.realworld.android.cowinvaccinenotifier.Adapters;
+package io.realworld.android.vaccineslotalert.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realworld.android.api.models.State;
-import io.realworld.android.cowinvaccinenotifier.Activies.DistrictActivity;
-import io.realworld.android.cowinvaccinenotifier.R;
+import io.realworld.android.vaccineslotalert.Activies.DistrictActivity;
+import io.realworld.android.vaccineslotalert.R;
 
 public class SelectStateAdapter extends RecyclerView.Adapter<SelectStateAdapter.SelectViewHolder> implements Filterable {
 

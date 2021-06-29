@@ -1,4 +1,4 @@
-package io.realworld.android.cowinvaccinenotifier.Helpers;
+package io.realworld.android.vaccineslotalert.Helpers;
 
 
 import android.content.Context;
@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import io.realworld.android.cowinvaccinenotifier.R;
+import io.realworld.android.vaccineslotalert.R;
 
 public class CurvedBottomNavigationView extends BottomNavigationView {
     private Path mPath;
@@ -21,7 +21,7 @@ public class CurvedBottomNavigationView extends BottomNavigationView {
 
     int width  = Resources.getSystem().getDisplayMetrics().widthPixels;
     int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-    /** the CURVE_CIRCLE_RADIUS represent the radius of the fab button */
+
     public final int CURVE_CIRCLE_RADIUS = ((256*width)/1080) / 3;
     // the coordinates of the first curve
     public Point mFirstCurveStartPoint = new Point();

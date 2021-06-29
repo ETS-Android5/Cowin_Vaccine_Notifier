@@ -1,4 +1,4 @@
-package io.realworld.android.cowinvaccinenotifier.Activies;
+package io.realworld.android.vaccineslotalert.Activies;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.paperdb.Paper;
-import io.realworld.android.cowinvaccinenotifier.Data.Subscription;
-import io.realworld.android.cowinvaccinenotifier.R;
+import io.realworld.android.vaccineslotalert.Data.Subscription;
+import io.realworld.android.vaccineslotalert.R;
 
 public class OthersActivity extends AppCompatActivity {
 

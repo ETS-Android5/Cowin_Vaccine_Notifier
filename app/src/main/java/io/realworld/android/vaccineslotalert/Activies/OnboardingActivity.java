@@ -1,15 +1,12 @@
-package io.realworld.android.cowinvaccinenotifier;
+package io.realworld.android.vaccineslotalert.Activies;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -20,7 +17,7 @@ import com.ramotion.paperonboarding.listeners.PaperOnboardingOnRightOutListener;
 import java.util.ArrayList;
 
 import io.paperdb.Paper;
-import io.realworld.android.cowinvaccinenotifier.Activies.MainActivity;
+import io.realworld.android.vaccineslotalert.R;
 
 public class OnboardingActivity extends AppCompatActivity {
 

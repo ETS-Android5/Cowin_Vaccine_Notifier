@@ -1,4 +1,4 @@
-package io.realworld.android.cowinvaccinenotifier.Activies;
+package io.realworld.android.vaccineslotalert.Activies;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,7 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import io.realworld.android.cowinvaccinenotifier.R;
+import io.realworld.android.vaccineslotalert.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 

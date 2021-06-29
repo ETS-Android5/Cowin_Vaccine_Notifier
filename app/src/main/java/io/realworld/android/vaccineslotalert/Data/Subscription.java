@@ -1,4 +1,4 @@
-package io.realworld.android.cowinvaccinenotifier.Data;
+package io.realworld.android.vaccineslotalert.Data;
 
 import java.util.List;
 

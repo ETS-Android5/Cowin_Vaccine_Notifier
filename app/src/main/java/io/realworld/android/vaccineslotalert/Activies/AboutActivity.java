@@ -1,21 +1,13 @@
-package io.realworld.android.cowinvaccinenotifier.Activies;
+package io.realworld.android.vaccineslotalert.Activies;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.FileUtils;
-import android.util.Patterns;
 import android.view.View;
-import android.webkit.URLUtil;
-import android.widget.Toast;
 
-import io.realworld.android.cowinvaccinenotifier.R;
-import okhttp3.HttpUrl;
+import io.realworld.android.vaccineslotalert.R;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -45,6 +37,22 @@ public class AboutActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:ayan10.dev@gmail.com"));
+                startActivity(browserIntent);
+            }
+        });
+
+        findViewById(R.id.onblink).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.ramotion.com"));
+                startActivity(browserIntent);
+            }
+        });
+
+        findViewById(R.id.dblink).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Ramotion/paper-onboarding-android"));
                 startActivity(browserIntent);
             }
         });

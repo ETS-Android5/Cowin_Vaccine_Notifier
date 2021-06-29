@@ -1,4 +1,4 @@
-package io.realworld.android.cowinvaccinenotifier;
+package io.realworld.android.vaccineslotalert;
 
 import org.junit.Test;
 

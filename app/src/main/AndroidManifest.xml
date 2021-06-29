@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.realworld.android.cowinvaccinenotifier">
+    package="io.realworld.android.vaccineslotalert">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,19 +11,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CowinVaccineNotifier">
-        <activity android:name=".OnboardingActivity"></activity>
-        <activity android:name=".Activies.SplashScreenActivity">
+        <activity android:name="io.realworld.android.vaccineslotalert.Activies.OnboardingActivity"></activity>
+        <activity android:name="io.realworld.android.vaccineslotalert.Activies.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activies.AboutActivity" />
-        <activity android:name=".Activies.OthersActivity" />
-        <activity android:name=".Activies.DistrictActivity" />
-        <activity android:name=".Activies.StateActivity" />
-        <activity android:name=".Activies.MainActivity"></activity>
+        <activity android:name="io.realworld.android.vaccineslotalert.Activies.AboutActivity" />
+        <activity android:name="io.realworld.android.vaccineslotalert.Activies.OthersActivity" />
+        <activity android:name="io.realworld.android.vaccineslotalert.Activies.DistrictActivity" />
+        <activity android:name="io.realworld.android.vaccineslotalert.Activies.StateActivity" />
+        <activity android:name="io.realworld.android.vaccineslotalert.Activies.MainActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"

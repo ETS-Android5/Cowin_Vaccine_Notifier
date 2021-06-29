@@ -1,4 +1,4 @@
-package io.realworld.android.cowinvaccinenotifier.Fragments;
+package io.realworld.android.vaccineslotalert.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -22,12 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.paperdb.Paper;
-import io.realworld.android.cowinvaccinenotifier.Activies.AboutActivity;
-import io.realworld.android.cowinvaccinenotifier.Activies.MainActivity;
-import io.realworld.android.cowinvaccinenotifier.Activies.StateActivity;
-import io.realworld.android.cowinvaccinenotifier.Adapters.HomeAdapter;
-import io.realworld.android.cowinvaccinenotifier.Data.Subscription;
-import io.realworld.android.cowinvaccinenotifier.R;
+import io.realworld.android.vaccineslotalert.Activies.AboutActivity;
+import io.realworld.android.vaccineslotalert.Activies.MainActivity;
+import io.realworld.android.vaccineslotalert.Activies.StateActivity;
+import io.realworld.android.vaccineslotalert.Adapters.HomeAdapter;
+import io.realworld.android.vaccineslotalert.Data.Subscription;
+import io.realworld.android.vaccineslotalert.R;
 
 public class HomeFragment extends Fragment {
 

@@ -1,4 +1,4 @@
-package io.realworld.android.cowinvaccinenotifier;
+package io.realworld.android.vaccineslotalert;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("io.realworld.android.cowinvaccinenotifier", appContext.getPackageName());
+        assertEquals("io.realworld.android.vaccineslotalert", appContext.getPackageName());
     }
 }

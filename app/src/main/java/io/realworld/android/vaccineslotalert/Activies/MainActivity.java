@@ -1,10 +1,8 @@
-package io.realworld.android.cowinvaccinenotifier.Activies;
+package io.realworld.android.vaccineslotalert.Activies;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.NavOptions;
@@ -27,22 +25,17 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.concurrent.TimeUnit;
 
 import io.paperdb.Paper;
-import io.realworld.android.cowinvaccinenotifier.Helpers.CurvedBottomNavigationView;
-import io.realworld.android.cowinvaccinenotifier.Helpers.AlertWorker;
-import io.realworld.android.cowinvaccinenotifier.OnboardingActivity;
-import io.realworld.android.cowinvaccinenotifier.R;
+import io.realworld.android.vaccineslotalert.Helpers.CurvedBottomNavigationView;
+import io.realworld.android.vaccineslotalert.Helpers.AlertWorker;
+import io.realworld.android.vaccineslotalert.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener, NavController.OnDestinationChangedListener{
 
     private static final String TAG = "MainActivity";
     public NavController mNavController;
-//    public BottomAppBar mBottomAppBar;
-    public DrawerLayout mDrawerLayout;
-    public Toolbar mToolbar;
     public NavOptions.Builder leftToRightBuilder, rightToLeftBuilder;
     private AppBarConfiguration mAppBarConfiguration;
     private CurvedBottomNavigationView mBottomNavigationView;
-    private NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .build();
 
                 PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(AlertWorker.class, 15, TimeUnit.MINUTES)
-                        //.setConstraints(constraints)
                         .addTag("work")
                         .build();
 
@@ -79,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .build();
 
                 PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(AlertWorker.class, 15, TimeUnit.MINUTES)
-                        //.setConstraints(constraints)
                         .addTag("work")
                         .build();
 
@@ -89,13 +80,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
-//        fab.setOnClickListener(v -> {
-//            Toast.makeText(this, "Clicked", Toast.LENGTH_LONG).show();
-//
-//            Intent intent = new Intent(MainActivity.this, StateActivity.class);
-//            startActivity(intent);
-//
-//        });
         Log.d(TAG, "onNavigationItemSelected: animations for opening fragment to right of current one");
         leftToRightBuilder = new NavOptions.Builder();
         leftToRightBuilder.setEnterAnim(R.anim.slide_in_right);
@@ -117,10 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void Init() {
         Paper.init(this);
         mBottomNavigationView = findViewById(R.id.bottom_nav_view);
-//        mBottomAppBar = findViewById(R.id.bottom_app_bar);
-//        fab = findViewById(R.id.fab);
 
-        //set up navigation
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
         mNavController.addOnDestinationChangedListener(this);
 
@@ -149,14 +130,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
         Log.d(TAG, "onDestinationChanged: starts");
-//        fab.setOnClickListener(null);
         switch (destination.getId()) {
             case R.id.nav_home:
-//                mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-//                mBottomAppBar.setVisibility(View.VISIBLE);
-//                mBottomAppBar.performShow();
-//                mBottomAppBar.bringToFront();
-
 //                fab.show();
 //                fab.setImageResource(R.drawable.ic_add);
 //                fab.setVisibility(View.VISIBLE);
@@ -165,10 +140,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                fab.show();
 //                fab.setVisibility(View.VISIBLE);
 //                fab.setImageResource(R.drawable.ic_add);
-//                mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-//                mBottomAppBar.setVisibility(View.VISIBLE);
-//                mBottomAppBar.performShow();
-//                mBottomAppBar.bringToFront();
                 break;
             default:
                 break;

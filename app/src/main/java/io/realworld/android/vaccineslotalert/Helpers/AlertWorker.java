@@ -1,4 +1,4 @@
-package io.realworld.android.cowinvaccinenotifier.Helpers;
+package io.realworld.android.vaccineslotalert.Helpers;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -35,11 +35,10 @@ import io.realworld.android.api.CowinClient;
 import io.realworld.android.api.models.AppointmentsForSevenResponse;
 import io.realworld.android.api.models.Center;
 import io.realworld.android.api.models.SessionForSeven;
-import io.realworld.android.cowinvaccinenotifier.Activies.MainActivity;
-import io.realworld.android.cowinvaccinenotifier.Activies.SplashScreenActivity;
-import io.realworld.android.cowinvaccinenotifier.Data.Alert;
-import io.realworld.android.cowinvaccinenotifier.Data.Subscription;
-import io.realworld.android.cowinvaccinenotifier.R;
+import io.realworld.android.vaccineslotalert.Activies.SplashScreenActivity;
+import io.realworld.android.vaccineslotalert.Data.Alert;
+import io.realworld.android.vaccineslotalert.Data.Subscription;
+import io.realworld.android.vaccineslotalert.R;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

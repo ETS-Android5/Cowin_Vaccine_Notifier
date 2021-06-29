@@ -1,4 +1,4 @@
-package io.realworld.android.cowinvaccinenotifier.Adapters;
+package io.realworld.android.vaccineslotalert.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,13 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.paperdb.Paper;
-import io.realworld.android.api.models.Center;
-import io.realworld.android.cowinvaccinenotifier.Data.Alert;
-import io.realworld.android.cowinvaccinenotifier.Data.Subscription;
-import io.realworld.android.cowinvaccinenotifier.R;
+import io.realworld.android.vaccineslotalert.Data.Alert;
+import io.realworld.android.vaccineslotalert.R;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>{
 
@@ -36,10 +33,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         this.context = context;
         this.alerts = alerts;
         this.activity = activity;
-    }
-
-    public void setAlertSet(HashMap<String, List<Alert>> alertSet) {
-        this.alerts = alerts;
     }
 
     @NonNull
