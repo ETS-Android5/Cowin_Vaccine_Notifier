@@ -6,6 +6,7 @@ public class Subscription {
 
     private String state;
     private String district;
+    private String pin;
     private List<Integer> ages;
     private List<Integer> doses;
     private long districtId;
@@ -16,6 +17,20 @@ public class Subscription {
         this.districtId = districtId;
         this.ages = ages;
         this.doses = doses;
+    }
+
+    public Subscription(String pin, List<Integer> ages, List<Integer> doses) {
+        this.pin = pin;
+        this.ages = ages;
+        this.doses = doses;
+    }
+
+    public String getPin() {
+        return pin;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
     }
 
     public long getDistrictId() {

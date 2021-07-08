@@ -41,12 +41,21 @@ public class NotificationFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_notification, container, false);
         Init(root);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(requireContext(), StateActivity.class);
-                startActivity(intent);
-            }
+        fab.setOnClickListener(view -> {
+
+            AlertDialog mDialog = new AlertDialog.Builder(requireContext())
+                    .setTitle("Delete")
+                    .setMessage("Are you sure! You want to unsubscribe this task?")
+                    .setCancelable(false)
+                    .setPositiveButton("Search by Pin", (dialog, which) -> {
+                        Toast.makeText(requireContext(), "Work in process", Toast.LENGTH_LONG)
+                                .show();
+                    })
+                    .setNegativeButton("Search by District", (dialog, which) -> {
+                        Intent intent = new Intent(requireContext(), StateActivity.class);
+                        startActivity(intent);
+                    }).show();
+
         });
 
         List<Alert> alerts = Paper.book().read("test11", new ArrayList<>());
@@ -69,8 +78,8 @@ public class NotificationFragment extends Fragment {
 
                     AlertDialog mDialog = new AlertDialog.Builder(requireContext())
                             .setTitle("Delete All")
-                            .setMessage("Are you sure want to all of this notifications?")
-                            .setCancelable(false)
+                            .setMessage("Are you sure! You want to delete all of this notifications?")
+                            .setCancelable(true)
                             .setPositiveButton("Delete", (dialog, which) -> {
                                 Paper.book().delete("test11");
                                 recyclerView.setVisibility(View.GONE);

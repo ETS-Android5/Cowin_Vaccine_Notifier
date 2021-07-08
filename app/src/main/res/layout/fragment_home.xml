@@ -96,7 +96,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add"
         android:id="@+id/fab"
-        android:backgroundTint="#FFE600"
+        android:backgroundTint="@color/color_secondary"
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

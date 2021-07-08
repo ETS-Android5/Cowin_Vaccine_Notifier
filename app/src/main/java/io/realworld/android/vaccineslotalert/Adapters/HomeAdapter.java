@@ -3,11 +3,13 @@ package io.realworld.android.vaccineslotalert.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -47,8 +49,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
         Subscription subscription = subscriptions.get(position);
 
-        holder.state.setText(subscription.getState());
-        holder.district.setText(subscription.getDistrict());
+        if(subscription.getPin() == null){
+            holder.state.setText(subscription.getState());
+            holder.district.setText(subscription.getDistrict());
+        } else {
+            holder.state.setText(subscription.getPin());
+            holder.district.setVisibility(View.GONE);
+            holder.state.setPadding(5, 15, 0, 15);
+        }
         List<Integer> ages = subscription.getAges();
 
         if (ages.size() == 0 || ages.size() == 2) {
@@ -81,17 +89,55 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
             public void onClick(View v) {
                 AlertDialog mDialog = new AlertDialog.Builder(activity)
                         .setTitle("Delete")
-                        .setMessage("Are you sure want to unsubscribe this task?")
+                        .setMessage("Are you sure! You want to unsubscribe this task?")
                         .setCancelable(false)
                         .setPositiveButton("Delete", (dialog, which) -> {
-                            long code = subscription.getDistrictId();
-                            subscriptions.remove(subscription);
-                            Paper.init(context);
-                            Paper.book().write("subscription", subscriptions);
-                            HashMap<String, List<Center> > centers = Paper.book().read("test31", new HashMap<>());
-                            centers.remove(String.valueOf(code));
-                            Paper.book().write("test31", centers);
-                            notifyDataSetChanged();
+                            long districtID = subscription.getDistrictId();
+                            String pinCode = subscription.getPin();
+                            if (districtID != 0L && pinCode == null) {
+                                long district = districtID;
+
+                                List<Integer> ages = subscription.getAges();
+                                List<Integer> doses = subscription.getDoses();
+
+                                StringBuilder builder = new StringBuilder(String.valueOf(district));
+                                for (int a = 0; a < ages.size(); a++) {
+                                    builder.append(ages.get(a));
+                                }
+                                for (int d = 0; d < doses.size(); d++) {
+                                    builder.append(doses.get(d));
+                                }
+                                String code = builder.toString();
+
+                                subscriptions.remove(subscription);
+                                Paper.init(context);
+                                Paper.book().write("subscription", subscriptions);
+                                HashMap<String, List<Center> > centers = Paper.book().read("test31", new HashMap<>());
+                                centers.remove(code);
+                                Paper.book().write("test31", centers);
+                                notifyDataSetChanged();
+
+                            }  else if (districtID == 0L &&  pinCode!=null) {
+                                List<Integer> ages = subscription.getAges();
+                                List<Integer> doses = subscription.getDoses();
+
+                                StringBuilder builder = new StringBuilder(pinCode);
+                                for (int a = 0; a < ages.size(); a++) {
+                                    builder.append(ages.get(a));
+                                }
+                                for (int d = 0; d < doses.size(); d++) {
+                                    builder.append(doses.get(d));
+                                }
+                                String code = builder.toString();
+
+                                subscriptions.remove(subscription);
+                                Paper.init(context);
+                                Paper.book().write("subscription", subscriptions);
+                                HashMap<String, List<Center> > centers = Paper.book().read("test31", new HashMap<>());
+                                centers.remove(code);
+                                Paper.book().write("test31", centers);
+                                notifyDataSetChanged();
+                            }
                             dialog.dismiss();
                         })
                         .setNegativeButton("Cancel", new AlertDialog.OnClickListener() {

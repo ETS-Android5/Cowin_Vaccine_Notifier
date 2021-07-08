@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white_de"
     tools:context=".Activies.OthersActivity">
 
     <TextView
@@ -56,7 +57,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="20dp"
             android:text="Choose Age Group(s)"
-            android:textColor="@color/color_primary_dark"
+            android:textColor="@color/color_primary"
             android:textSize="28sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -68,7 +69,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
             android:text="18 Years - 44 Years"
-            android:textColor="@color/black"
+            android:textColor="@color/black_de"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -79,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:text="45 Years +"
-            android:textColor="@color/black"
+            android:textColor="@color/black_de"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/group_18" />
@@ -92,7 +93,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="20dp"
             android:text="Choose Dose(s)"
-            android:textColor="@color/color_primary_dark"
+            android:textColor="@color/color_primary"
             android:textSize="28sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/group_45" />
@@ -104,7 +105,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
             android:text="Dose - 1"
-            android:textColor="@color/black"
+            android:textColor="@color/black_de"
             android:textSize="24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_doses" />
@@ -115,7 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:text="Dose - 2"
-            android:textColor="@color/black"
+            android:textColor="@color/black_de"
             android:textSize="24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dose1" />

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +22,7 @@ public class OthersActivity extends AppCompatActivity {
 
     long districtId;
     FloatingActionButton done;
-    String state, district;
+    String state, district, pincode;
     TextView placename;
     CheckBox group_18_44, group_45;
     CheckBox dose1, dose2;
@@ -35,6 +36,9 @@ public class OthersActivity extends AppCompatActivity {
         districtId = getIntent().getExtras().getLong("statecode");
         state = getIntent().getExtras().getString("state");
         district = getIntent().getExtras().getString("district");
+        pincode = getIntent().getExtras().getString("pin");
+        Log.d("abba", "staTW "+state);
+        Log.d("abba", "pin "+pincode);
         Init();
 
         List<Subscription> subscriptions = Paper.book().read("subscription", new ArrayList<>());
@@ -59,26 +63,49 @@ public class OthersActivity extends AppCompatActivity {
             } else if (dose1.isChecked() && !dose2.isChecked()) {
                 doses.add(1);
             }
-            Subscription subscription = new Subscription(state, district, districtId, ages, doses);
-            if(contains(subscriptions, subscription)) {
-                Toast.makeText(this, "This subscription is all ready added in the list", Toast.LENGTH_LONG).show();
-            } else {
-                subscriptions.add(subscription);
-                Paper.book().write("subscription", subscriptions);
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+            if (pincode == null && state != null) {
+                Subscription subscription = new Subscription(state, district, districtId, ages, doses);
+                if (contains(subscriptions, subscription, state, null)) {
+                    Toast.makeText(this, "This subscription is all ready added in the list", Toast.LENGTH_LONG).show();
+                } else {
+                    subscriptions.add(subscription);
+                    Paper.book().write("subscription", subscriptions);
+                    Intent intent = new Intent(this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+            } else if (pincode != null && state == null) {
+                Subscription subscription = new Subscription(pincode, ages, doses);
+                if (contains(subscriptions, subscription, null, pincode)) {
+                    Toast.makeText(this, "This subscription is all ready added in the list", Toast.LENGTH_LONG).show();
+                } else {
+                    subscriptions.add(subscription);
+                    Paper.book().write("subscription", subscriptions);
+                    Intent intent = new Intent(this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
             }
         });
 
     }
 
-    private boolean contains(List<Subscription> subscriptions, Subscription subscription){
-        for (int i = 0; i < subscriptions.size(); i++){
-            if((subscriptions.get(i).getDistrictId() == subscription.getDistrictId()) &&
-                    (subscriptions.get(i).getAges().equals(subscription.getAges())) &&
-                    (subscriptions.get(i).getDoses().equals(subscription.getDoses()))){
-                return true;
+    private boolean contains(List<Subscription> subscriptions, Subscription subscription,
+                             String state, String pincode){
+
+        for (int i = 0; i < subscriptions.size(); i++) {
+            if (pincode == null && state != null) {
+                if (((subscriptions.get(i).getPin() == null)) && (subscriptions.get(i).getDistrictId() == subscription.getDistrictId()) &&
+                        (subscriptions.get(i).getAges().equals(subscription.getAges())) &&
+                        (subscriptions.get(i).getDoses().equals(subscription.getDoses()))) {
+                    return true;
+                }
+            } else if (pincode != null && state == null) {
+                if ((subscriptions.get(i).getPin() != null) && (subscriptions.get(i).getPin().equals(subscription.getPin())) &&
+                        (subscriptions.get(i).getAges().equals(subscription.getAges())) &&
+                        (subscriptions.get(i).getDoses().equals(subscription.getDoses()))) {
+                    return true;
+                }
             }
         }
         return false;
@@ -93,6 +120,10 @@ public class OthersActivity extends AppCompatActivity {
         dose1 = findViewById(R.id.dose1);
         dose2 = findViewById(R.id.dose2);
 
-        placename.setText(state + " - " + district);
+        if(pincode == null) {
+            placename.setText(state + " - " + district);
+        } else {
+            placename.setText("Pin - "+pincode);
+        }
     }
 }

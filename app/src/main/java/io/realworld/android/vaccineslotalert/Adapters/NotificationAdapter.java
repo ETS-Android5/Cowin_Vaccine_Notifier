@@ -62,7 +62,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 public void onClick(View v) {
                     AlertDialog mDialog = new AlertDialog.Builder(activity)
                             .setTitle("Delete")
-                            .setMessage("Are you sure want to unsubscribe this task?")
+                            .setMessage("Are you sure! You want to delete this notification?")
                             .setCancelable(false)
                             .setPositiveButton("Delete", (dialog, which) -> {
                                 alerts.remove(alert);

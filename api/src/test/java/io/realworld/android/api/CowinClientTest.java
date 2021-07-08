@@ -42,4 +42,11 @@ public class CowinClientTest {
                 .getAppointmentsForSeven(712, "05-06-2021", user_agent).execute();
         assertNotNull(states.body());
     }
+
+    @Test
+    public void getAppointmentsByCalenderAndPin() throws IOException {
+        Response<AppointmentsForSevenResponse> states = cowinClient.api
+                .getAppointmentsForSevenByPin("743291", "07-07-2021", user_agent).execute();
+        assertNotNull(states.body());
+    }
 }

@@ -36,4 +36,11 @@ public interface CowinAPIs {
             @Query("date") String date,
             @Header("User-Agent") String token
     );
+
+    @GET("appointment/sessions/public/calendarByPin")
+    Call<AppointmentsForSevenResponse> getAppointmentsForSevenByPin(
+            @Query("pincode") String pincode,
+            @Query("date") String date,
+            @Header("User-Agent") String token
+    );
 }

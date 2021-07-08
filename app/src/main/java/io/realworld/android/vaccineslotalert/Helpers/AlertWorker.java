@@ -70,48 +70,100 @@ public class AlertWorker extends Worker {
         List<Subscription> subscriptions = Paper.book().read("subscription", new ArrayList<>());
         for(int i = 0; i < subscriptions.size(); i++) {
             Log.d("dd-MM-yyyy", String.valueOf(subscriptions.get(i).getDistrictId()));
-            long district = subscriptions.get(i).getDistrictId();
-            String code = String.valueOf(district);
-            List<Integer> ages = subscriptions.get(i).getAges();
-            List<Integer> doses = subscriptions.get(i).getDoses();
-            String user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36";
-            Call<AppointmentsForSevenResponse> call = cowinClient.api
-                    .getAppointmentsForSeven(district, date, user_agent);
-            call.enqueue(new Callback<AppointmentsForSevenResponse>() {
-                @Override
-                public void onResponse(Call<AppointmentsForSevenResponse> call, Response<AppointmentsForSevenResponse> response) {
-                    AppointmentsForSevenResponse appointments = response.body();
-                    List<Center> newCenterList = appointments.getCenters();
-                    ;
-                    if (test.containsKey(code)) {
-                        List<Center> centerList = test.get(code);
-                        int count = 0;
-                        for (int i = 0; i < newCenterList.size(); i++) {
-                            int centerId = newCenterList.get(i).getCenterId();
+            long districtID = subscriptions.get(i).getDistrictId();
+            String pinCode = subscriptions.get(i).getPin();
 
-                            int in = getIndexCenterByProperty(centerId, centerList);
+            if (districtID != 0L && pinCode == null) {
+                long district = districtID;
 
-                            if (in != -1) {
-                                Center center = centerList.get(in);
-                                Center newCenter = newCenterList.get(i);
-                                List<SessionForSeven> sessionList = center.getSessions();
-                                List<SessionForSeven> newSessionList = newCenter.getSessions();
+                List<Integer> ages = subscriptions.get(i).getAges();
+                List<Integer> doses = subscriptions.get(i).getDoses();
 
-                                for (int j = 0; j < newSessionList.size(); j++) {
-                                    String sessionId = newSessionList.get(j).getSessionId();
-                                    Log.d("testo", sessionId);
-                                    int ind = getIndexSessionByProperty(sessionId, sessionList);
+                StringBuilder builder = new StringBuilder(String.valueOf(district));
+                for (int a = 0; a < ages.size(); a++) {
+                    builder.append(ages.get(a));
+                }
+                for (int d = 0; d < doses.size(); d++) {
+                    builder.append(doses.get(d));
+                }
+                String code = builder.toString();
+                String user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36";
+                Call<AppointmentsForSevenResponse> call = cowinClient.api
+                        .getAppointmentsForSeven(district, date, user_agent);
+                call.enqueue(new Callback<AppointmentsForSevenResponse>() {
+                    @Override
+                    public void onResponse(Call<AppointmentsForSevenResponse> call, Response<AppointmentsForSevenResponse> response) {
+                        AppointmentsForSevenResponse appointments = response.body();
+                        List<Center> newCenterList = appointments.getCenters();
+                        ;
+                        if (test.containsKey(code)) {
+                            List<Center> centerList = test.get(code);
+                            int count = 0;
+                            for (int i = 0; i < newCenterList.size(); i++) {
+                                int centerId = newCenterList.get(i).getCenterId();
 
-                                    if (ind != -1) {
-                                        if ((newSessionList.get(j).getAvailableCapacity()
-                                                > sessionList.get(ind).getAvailableCapacity())
-                                                || (newSessionList.get(j).getAvailableCapacityDose1()
-                                                > sessionList.get(ind).getAvailableCapacityDose1()) ||
-                                                (newSessionList.get(j).getAvailableCapacityDose2()
-                                                        > sessionList.get(ind).getAvailableCapacityDose2())) {
+                                int in = getIndexCenterByProperty(centerId, centerList);
 
-                                            if (ages.size() == 1) {
-                                                if ((newSessionList.get(j).getMinAgeLimit() == ages.get(0))) {
+                                if (in != -1) {
+                                    Center center = centerList.get(in);
+                                    Center newCenter = newCenterList.get(i);
+                                    List<SessionForSeven> sessionList = center.getSessions();
+                                    List<SessionForSeven> newSessionList = newCenter.getSessions();
+
+                                    for (int j = 0; j < newSessionList.size(); j++) {
+                                        String sessionId = newSessionList.get(j).getSessionId();
+                                        Log.d("testo", sessionId);
+                                        int ind = getIndexSessionByProperty(sessionId, sessionList);
+
+                                        if (ind != -1) {
+                                            if ((newSessionList.get(j).getAvailableCapacity()
+                                                    > sessionList.get(ind).getAvailableCapacity())
+                                                    || (newSessionList.get(j).getAvailableCapacityDose1()
+                                                    > sessionList.get(ind).getAvailableCapacityDose1()) ||
+                                                    (newSessionList.get(j).getAvailableCapacityDose2()
+                                                            > sessionList.get(ind).getAvailableCapacityDose2())) {
+
+                                                if (ages.size() == 1) {
+                                                    if ((newSessionList.get(j).getMinAgeLimit() == ages.get(0))) {
+                                                        if (doses.size() == 1) {
+                                                            if (doses.get(0) == 1 &&
+                                                                    newSessionList.get(j).getAvailableCapacityDose1() > 0 &&
+                                                                    (newSessionList.get(j).getAvailableCapacityDose1()
+                                                                            > sessionList.get(ind).getAvailableCapacityDose1())) {
+                                                                Alert alert = new Alert(newCenter.getName(),
+                                                                        newCenter.getAddress() + ", "
+                                                                                + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                        newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                        newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                        newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                                alerts.add(alert);
+                                                                count++;
+                                                            } else if (doses.get(0) == 2 &&
+                                                                    newSessionList.get(j).getAvailableCapacityDose2() > 0 &&
+                                                                    (newSessionList.get(j).getAvailableCapacityDose2()
+                                                                            > sessionList.get(ind).getAvailableCapacityDose2())) {
+                                                                Alert alert = new Alert(newCenter.getName(),
+                                                                        newCenter.getAddress() + ", "
+                                                                                + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                        newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                        newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                        newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                                alerts.add(alert);
+                                                                count++;
+                                                            }
+                                                        } else {
+                                                            Alert alert = new Alert(newCenter.getName(),
+                                                                    newCenter.getAddress() + ", "
+                                                                            + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                    newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                    newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                    newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                            alerts.add(alert);
+                                                            count++;
+                                                        }
+
+                                                    }
+                                                } else {
                                                     if (doses.size() == 1) {
                                                         if (doses.get(0) == 1 &&
                                                                 newSessionList.get(j).getAvailableCapacityDose1() > 0 &&
@@ -148,26 +200,70 @@ public class AlertWorker extends Worker {
                                                         alerts.add(alert);
                                                         count++;
                                                     }
-
                                                 }
-                                            } else {
-                                                if (doses.size() == 1) {
-                                                    if (doses.get(0) == 1 &&
-                                                            newSessionList.get(j).getAvailableCapacityDose1() > 0 &&
-                                                            (newSessionList.get(j).getAvailableCapacityDose1()
-                                                                    > sessionList.get(ind).getAvailableCapacityDose1())) {
-                                                        Alert alert = new Alert(newCenter.getName(),
-                                                                newCenter.getAddress() + ", "
-                                                                        + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
-                                                                newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
-                                                                newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
-                                                                newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
-                                                        alerts.add(alert);
-                                                        count++;
-                                                    } else if (doses.get(0) == 2 &&
-                                                            newSessionList.get(j).getAvailableCapacityDose2() > 0 &&
-                                                            (newSessionList.get(j).getAvailableCapacityDose2()
-                                                                    > sessionList.get(ind).getAvailableCapacityDose2())) {
+                                            }
+                                        } else {
+                                            if (newSessionList.get(j).getAvailableCapacity() > 0) {
+                                                if (ages.size() == 1) {
+                                                    if ((newSessionList.get(j).getMinAgeLimit() == ages.get(0))) {
+                                                        if (doses.size() == 1) {
+                                                            if (doses.get(0) == 1 &&
+                                                                    newSessionList.get(j).getAvailableCapacityDose1() > 0) {
+                                                                Alert alert = new Alert(newCenter.getName(),
+                                                                        newCenter.getAddress() + ", "
+                                                                                + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                        newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                        newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                        newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                                alerts.add(alert);
+                                                                count++;
+                                                            } else if (doses.get(0) == 2 &&
+                                                                    newSessionList.get(j).getAvailableCapacityDose2() > 0) {
+                                                                Alert alert = new Alert(newCenter.getName(),
+                                                                        newCenter.getAddress() + ", "
+                                                                                + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                        newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                        newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                        newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                                alerts.add(alert);
+                                                                count++;
+                                                            }
+                                                        } else {
+                                                            Alert alert = new Alert(newCenter.getName(),
+                                                                    newCenter.getAddress() + ", "
+                                                                            + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                    newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                    newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                    newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                            alerts.add(alert);
+                                                            count++;
+                                                        }
+
+                                                    }
+                                                } else {
+                                                    if (doses.size() == 1) {
+                                                        if (doses.get(0) == 1 &&
+                                                                newSessionList.get(j).getAvailableCapacityDose1() > 0) {
+                                                            Alert alert = new Alert(newCenter.getName(),
+                                                                    newCenter.getAddress() + ", "
+                                                                            + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                    newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                    newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                    newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                            alerts.add(alert);
+                                                            count++;
+                                                        } else if (doses.get(0) == 2 &&
+                                                                newSessionList.get(j).getAvailableCapacityDose2() > 0) {
+                                                            Alert alert = new Alert(newCenter.getName(),
+                                                                    newCenter.getAddress() + ", "
+                                                                            + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                    newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                    newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                    newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                            alerts.add(alert);
+                                                            count++;
+                                                        }
+                                                    } else {
                                                         Alert alert = new Alert(newCenter.getName(),
                                                                 newCenter.getAddress() + ", "
                                                                         + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
@@ -177,20 +273,16 @@ public class AlertWorker extends Worker {
                                                         alerts.add(alert);
                                                         count++;
                                                     }
-                                                } else {
-                                                    Alert alert = new Alert(newCenter.getName(),
-                                                            newCenter.getAddress() + ", "
-                                                                    + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
-                                                            newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
-                                                            newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
-                                                            newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
-                                                    alerts.add(alert);
-                                                    count++;
                                                 }
                                             }
                                         }
-                                    } else {
+                                    }
+                                } else {
+                                    Center newCenter = newCenterList.get(i);
+                                    List<SessionForSeven> newSessionList = newCenter.getSessions();
+                                    for (int j = 0; j < newSessionList.size(); j++) {
                                         if (newSessionList.get(j).getAvailableCapacity() > 0) {
+
                                             if (ages.size() == 1) {
                                                 if ((newSessionList.get(j).getMinAgeLimit() == ages.get(0))) {
                                                     if (doses.size() == 1) {
@@ -225,46 +317,35 @@ public class AlertWorker extends Worker {
                                                         alerts.add(alert);
                                                         count++;
                                                     }
-
                                                 }
                                             } else {
-                                                if (doses.size() == 1) {
-                                                    if (doses.get(0) == 1 &&
-                                                            newSessionList.get(j).getAvailableCapacityDose1() > 0) {
-                                                        Alert alert = new Alert(newCenter.getName(),
-                                                                newCenter.getAddress() + ", "
-                                                                        + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
-                                                                newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
-                                                                newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
-                                                                newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
-                                                        alerts.add(alert);
-                                                        count++;
-                                                    } else if (doses.get(0) == 2 &&
-                                                            newSessionList.get(j).getAvailableCapacityDose2() > 0) {
-                                                        Alert alert = new Alert(newCenter.getName(),
-                                                                newCenter.getAddress() + ", "
-                                                                        + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
-                                                                newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
-                                                                newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
-                                                                newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
-                                                        alerts.add(alert);
-                                                        count++;
-                                                    }
-                                                } else {
-                                                    Alert alert = new Alert(newCenter.getName(),
-                                                            newCenter.getAddress() + ", "
-                                                                    + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
-                                                            newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
-                                                            newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
-                                                            newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
-                                                    alerts.add(alert);
-                                                    count++;
-                                                }
+                                                Alert alert = new Alert(newCenter.getName(),
+                                                        newCenter.getAddress() + ", "
+                                                                + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                        newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                        newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                        newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                alerts.add(alert);
+                                                count++;
                                             }
+
                                         }
                                     }
                                 }
-                            } else {
+                            }
+                            if (count > 0) {
+                                displayNotification("Vaccine Available!",
+                                        count + " new centers in " +
+                                                newCenterList.get(0).getDistrictName() + " are available for vaccination ");
+                                Log.d("testo", "no notifi");
+                            }
+
+                            test.put(code, newCenterList);
+                            Paper.book().write("test31", test);
+                            Paper.book().write("test11", alerts);
+                        } else {
+                            int count = 0;
+                            for (int i = 0; i < newCenterList.size(); i++) {
                                 Center newCenter = newCenterList.get(i);
                                 List<SessionForSeven> newSessionList = newCenter.getSessions();
                                 for (int j = 0; j < newSessionList.size(); j++) {
@@ -306,40 +387,6 @@ public class AlertWorker extends Worker {
                                                 }
                                             }
                                         } else {
-                                            Alert alert = new Alert(newCenter.getName(),
-                                                    newCenter.getAddress() + ", "
-                                                            + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
-                                                    newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
-                                                    newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
-                                                    newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
-                                            alerts.add(alert);
-                                            count++;
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
-                        if (count > 0) {
-                            displayNotification("Vaccine Available!",
-                                    count + " new centers in " +
-                                            newCenterList.get(0).getDistrictName() + " are available for vaccination ");
-                            Log.d("testo", "no notifi");
-                        }
-
-                        test.put(code, newCenterList);
-                        Paper.book().write("test31", test);
-                        Paper.book().write("test11", alerts);
-                    } else {
-                        int count = 0;
-                        for (int i = 0; i < newCenterList.size(); i++) {
-                            Center newCenter = newCenterList.get(i);
-                            List<SessionForSeven> newSessionList = newCenter.getSessions();
-                            for (int j = 0; j < newSessionList.size(); j++) {
-                                if (newSessionList.get(j).getAvailableCapacity() > 0) {
-
-                                    if (ages.size() == 1) {
-                                        if ((newSessionList.get(j).getMinAgeLimit() == ages.get(0))) {
                                             if (doses.size() == 1) {
                                                 if (doses.get(0) == 1 &&
                                                         newSessionList.get(j).getAvailableCapacityDose1() > 0) {
@@ -373,20 +420,282 @@ public class AlertWorker extends Worker {
                                                 count++;
                                             }
                                         }
-                                    } else {
-                                        if (doses.size() == 1) {
-                                            if (doses.get(0) == 1 &&
-                                                    newSessionList.get(j).getAvailableCapacityDose1() > 0) {
-                                                Alert alert = new Alert(newCenter.getName(),
-                                                        newCenter.getAddress() + ", "
-                                                                + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
-                                                        newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
-                                                        newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
-                                                        newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
-                                                alerts.add(alert);
-                                                count++;
-                                            } else if (doses.get(0) == 2 &&
-                                                    newSessionList.get(j).getAvailableCapacityDose2() > 0) {
+                                    }
+                                }
+                            }
+                            if (count > 0) {
+                                displayNotification("Vaccine Available!",
+                                        count + " new sessions in " +
+                                                newCenterList.get(0).getDistrictName() + " are available for vaccination ");
+                                Log.d("testo", "no notifi");
+                            }
+
+                            test.put(code, newCenterList);
+                            Paper.book().write("test31", test);
+                            Paper.book().write("test11", alerts);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AppointmentsForSevenResponse> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Network Failure! Please check your internet connection and retry", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+                HashMap<String, List<Center>> testD = Paper.book().read("test31");
+                Log.d("test", String.valueOf(testD.size()));
+
+                for (HashMap.Entry mapElement : testD.entrySet()) {
+                    List<Center> key = (List<Center>) mapElement.getValue();
+
+                    for (Center item : key) {
+                        Log.d("test", item.getName());
+                    }
+                }
+            } else if (districtID == 0L &&  pinCode!=null){
+                List<Integer> ages = subscriptions.get(i).getAges();
+                List<Integer> doses = subscriptions.get(i).getDoses();
+
+                StringBuilder builder = new StringBuilder(pinCode);
+                for (int a = 0; a < ages.size(); a++) {
+                    builder.append(ages.get(a));
+                }
+                for (int d = 0; d < doses.size(); d++) {
+                    builder.append(doses.get(d));
+                }
+                String code = builder.toString();
+                String user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36";
+                Call<AppointmentsForSevenResponse> call = cowinClient.api
+                        .getAppointmentsForSevenByPin(pinCode, date, user_agent);
+                call.enqueue(new Callback<AppointmentsForSevenResponse>() {
+                    @Override
+                    public void onResponse(Call<AppointmentsForSevenResponse> call, Response<AppointmentsForSevenResponse> response) {
+                        AppointmentsForSevenResponse appointments = response.body();
+                        List<Center> newCenterList = appointments.getCenters();
+                        ;
+                        if (test.containsKey(code)) {
+                            List<Center> centerList = test.get(code);
+                            int count = 0;
+                            for (int i = 0; i < newCenterList.size(); i++) {
+                                int centerId = newCenterList.get(i).getCenterId();
+
+                                int in = getIndexCenterByProperty(centerId, centerList);
+
+                                if (in != -1) {
+                                    Center center = centerList.get(in);
+                                    Center newCenter = newCenterList.get(i);
+                                    List<SessionForSeven> sessionList = center.getSessions();
+                                    List<SessionForSeven> newSessionList = newCenter.getSessions();
+
+                                    for (int j = 0; j < newSessionList.size(); j++) {
+                                        String sessionId = newSessionList.get(j).getSessionId();
+                                        Log.d("testo", sessionId);
+                                        int ind = getIndexSessionByProperty(sessionId, sessionList);
+
+                                        if (ind != -1) {
+                                            if ((newSessionList.get(j).getAvailableCapacity()
+                                                    > sessionList.get(ind).getAvailableCapacity())
+                                                    || (newSessionList.get(j).getAvailableCapacityDose1()
+                                                    > sessionList.get(ind).getAvailableCapacityDose1()) ||
+                                                    (newSessionList.get(j).getAvailableCapacityDose2()
+                                                            > sessionList.get(ind).getAvailableCapacityDose2())) {
+
+                                                if (ages.size() == 1) {
+                                                    if ((newSessionList.get(j).getMinAgeLimit() == ages.get(0))) {
+                                                        if (doses.size() == 1) {
+                                                            if (doses.get(0) == 1 &&
+                                                                    newSessionList.get(j).getAvailableCapacityDose1() > 0 &&
+                                                                    (newSessionList.get(j).getAvailableCapacityDose1()
+                                                                            > sessionList.get(ind).getAvailableCapacityDose1())) {
+                                                                Alert alert = new Alert(newCenter.getName(),
+                                                                        newCenter.getAddress() + ", "
+                                                                                + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                        newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                        newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                        newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                                alerts.add(alert);
+                                                                count++;
+                                                            } else if (doses.get(0) == 2 &&
+                                                                    newSessionList.get(j).getAvailableCapacityDose2() > 0 &&
+                                                                    (newSessionList.get(j).getAvailableCapacityDose2()
+                                                                            > sessionList.get(ind).getAvailableCapacityDose2())) {
+                                                                Alert alert = new Alert(newCenter.getName(),
+                                                                        newCenter.getAddress() + ", "
+                                                                                + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                        newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                        newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                        newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                                alerts.add(alert);
+                                                                count++;
+                                                            }
+                                                        } else {
+                                                            Alert alert = new Alert(newCenter.getName(),
+                                                                    newCenter.getAddress() + ", "
+                                                                            + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                    newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                    newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                    newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                            alerts.add(alert);
+                                                            count++;
+                                                        }
+
+                                                    }
+                                                } else {
+                                                    if (doses.size() == 1) {
+                                                        if (doses.get(0) == 1 &&
+                                                                newSessionList.get(j).getAvailableCapacityDose1() > 0 &&
+                                                                (newSessionList.get(j).getAvailableCapacityDose1()
+                                                                        > sessionList.get(ind).getAvailableCapacityDose1())) {
+                                                            Alert alert = new Alert(newCenter.getName(),
+                                                                    newCenter.getAddress() + ", "
+                                                                            + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                    newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                    newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                    newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                            alerts.add(alert);
+                                                            count++;
+                                                        } else if (doses.get(0) == 2 &&
+                                                                newSessionList.get(j).getAvailableCapacityDose2() > 0 &&
+                                                                (newSessionList.get(j).getAvailableCapacityDose2()
+                                                                        > sessionList.get(ind).getAvailableCapacityDose2())) {
+                                                            Alert alert = new Alert(newCenter.getName(),
+                                                                    newCenter.getAddress() + ", "
+                                                                            + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                    newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                    newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                    newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                            alerts.add(alert);
+                                                            count++;
+                                                        }
+                                                    } else {
+                                                        Alert alert = new Alert(newCenter.getName(),
+                                                                newCenter.getAddress() + ", "
+                                                                        + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                        alerts.add(alert);
+                                                        count++;
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            if (newSessionList.get(j).getAvailableCapacity() > 0) {
+                                                if (ages.size() == 1) {
+                                                    if ((newSessionList.get(j).getMinAgeLimit() == ages.get(0))) {
+                                                        if (doses.size() == 1) {
+                                                            if (doses.get(0) == 1 &&
+                                                                    newSessionList.get(j).getAvailableCapacityDose1() > 0) {
+                                                                Alert alert = new Alert(newCenter.getName(),
+                                                                        newCenter.getAddress() + ", "
+                                                                                + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                        newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                        newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                        newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                                alerts.add(alert);
+                                                                count++;
+                                                            } else if (doses.get(0) == 2 &&
+                                                                    newSessionList.get(j).getAvailableCapacityDose2() > 0) {
+                                                                Alert alert = new Alert(newCenter.getName(),
+                                                                        newCenter.getAddress() + ", "
+                                                                                + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                        newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                        newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                        newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                                alerts.add(alert);
+                                                                count++;
+                                                            }
+                                                        } else {
+                                                            Alert alert = new Alert(newCenter.getName(),
+                                                                    newCenter.getAddress() + ", "
+                                                                            + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                    newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                    newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                    newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                            alerts.add(alert);
+                                                            count++;
+                                                        }
+
+                                                    }
+                                                } else {
+                                                    if (doses.size() == 1) {
+                                                        if (doses.get(0) == 1 &&
+                                                                newSessionList.get(j).getAvailableCapacityDose1() > 0) {
+                                                            Alert alert = new Alert(newCenter.getName(),
+                                                                    newCenter.getAddress() + ", "
+                                                                            + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                    newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                    newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                    newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                            alerts.add(alert);
+                                                            count++;
+                                                        } else if (doses.get(0) == 2 &&
+                                                                newSessionList.get(j).getAvailableCapacityDose2() > 0) {
+                                                            Alert alert = new Alert(newCenter.getName(),
+                                                                    newCenter.getAddress() + ", "
+                                                                            + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                    newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                    newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                    newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                            alerts.add(alert);
+                                                            count++;
+                                                        }
+                                                    } else {
+                                                        Alert alert = new Alert(newCenter.getName(),
+                                                                newCenter.getAddress() + ", "
+                                                                        + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                        alerts.add(alert);
+                                                        count++;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    Center newCenter = newCenterList.get(i);
+                                    List<SessionForSeven> newSessionList = newCenter.getSessions();
+                                    for (int j = 0; j < newSessionList.size(); j++) {
+                                        if (newSessionList.get(j).getAvailableCapacity() > 0) {
+
+                                            if (ages.size() == 1) {
+                                                if ((newSessionList.get(j).getMinAgeLimit() == ages.get(0))) {
+                                                    if (doses.size() == 1) {
+                                                        if (doses.get(0) == 1 &&
+                                                                newSessionList.get(j).getAvailableCapacityDose1() > 0) {
+                                                            Alert alert = new Alert(newCenter.getName(),
+                                                                    newCenter.getAddress() + ", "
+                                                                            + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                    newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                    newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                    newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                            alerts.add(alert);
+                                                            count++;
+                                                        } else if (doses.get(0) == 2 &&
+                                                                newSessionList.get(j).getAvailableCapacityDose2() > 0) {
+                                                            Alert alert = new Alert(newCenter.getName(),
+                                                                    newCenter.getAddress() + ", "
+                                                                            + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                    newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                    newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                    newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                            alerts.add(alert);
+                                                            count++;
+                                                        }
+                                                    } else {
+                                                        Alert alert = new Alert(newCenter.getName(),
+                                                                newCenter.getAddress() + ", "
+                                                                        + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                        alerts.add(alert);
+                                                        count++;
+                                                    }
+                                                }
+                                            } else {
                                                 Alert alert = new Alert(newCenter.getName(),
                                                         newCenter.getAddress() + ", "
                                                                 + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
@@ -396,47 +705,129 @@ public class AlertWorker extends Worker {
                                                 alerts.add(alert);
                                                 count++;
                                             }
-                                        } else {
-                                            Alert alert = new Alert(newCenter.getName(),
-                                                    newCenter.getAddress() + ", "
-                                                            + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
-                                                    newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
-                                                    newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
-                                                    newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
-                                            alerts.add(alert);
-                                            count++;
+
                                         }
                                     }
                                 }
                             }
-                        }
-                        if (count > 0) {
-                            displayNotification("Vaccine Available!",
-                                    count + " new sessions in " +
-                                            newCenterList.get(0).getDistrictName() + " are available for vaccination ");
-                            Log.d("testo", "no notifi");
-                        }
+                            if (count > 0) {
+                                displayNotification("Vaccine Available!",
+                                        count + " new centers in " +
+                                                newCenterList.get(0).getDistrictName() + " are available for vaccination ");
+                                Log.d("testo", "no notifi");
+                            }
 
-                        test.put(code, newCenterList);
-                        Paper.book().write("test31", test);
-                        Paper.book().write("test11", alerts);
+                            test.put(code, newCenterList);
+                            Paper.book().write("test31", test);
+                            Paper.book().write("test11", alerts);
+                        } else {
+                            int count = 0;
+                            for (int i = 0; i < newCenterList.size(); i++) {
+                                Center newCenter = newCenterList.get(i);
+                                List<SessionForSeven> newSessionList = newCenter.getSessions();
+                                for (int j = 0; j < newSessionList.size(); j++) {
+                                    if (newSessionList.get(j).getAvailableCapacity() > 0) {
+
+                                        if (ages.size() == 1) {
+                                            if ((newSessionList.get(j).getMinAgeLimit() == ages.get(0))) {
+                                                if (doses.size() == 1) {
+                                                    if (doses.get(0) == 1 &&
+                                                            newSessionList.get(j).getAvailableCapacityDose1() > 0) {
+                                                        Alert alert = new Alert(newCenter.getName(),
+                                                                newCenter.getAddress() + ", "
+                                                                        + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                        alerts.add(alert);
+                                                        count++;
+                                                    } else if (doses.get(0) == 2 &&
+                                                            newSessionList.get(j).getAvailableCapacityDose2() > 0) {
+                                                        Alert alert = new Alert(newCenter.getName(),
+                                                                newCenter.getAddress() + ", "
+                                                                        + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                                newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                                newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                                newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                        alerts.add(alert);
+                                                        count++;
+                                                    }
+                                                } else {
+                                                    Alert alert = new Alert(newCenter.getName(),
+                                                            newCenter.getAddress() + ", "
+                                                                    + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                            newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                            newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                            newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                    alerts.add(alert);
+                                                    count++;
+                                                }
+                                            }
+                                        } else {
+                                            if (doses.size() == 1) {
+                                                if (doses.get(0) == 1 &&
+                                                        newSessionList.get(j).getAvailableCapacityDose1() > 0) {
+                                                    Alert alert = new Alert(newCenter.getName(),
+                                                            newCenter.getAddress() + ", "
+                                                                    + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                            newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                            newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                            newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                    alerts.add(alert);
+                                                    count++;
+                                                } else if (doses.get(0) == 2 &&
+                                                        newSessionList.get(j).getAvailableCapacityDose2() > 0) {
+                                                    Alert alert = new Alert(newCenter.getName(),
+                                                            newCenter.getAddress() + ", "
+                                                                    + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                            newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                            newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                            newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                    alerts.add(alert);
+                                                    count++;
+                                                }
+                                            } else {
+                                                Alert alert = new Alert(newCenter.getName(),
+                                                        newCenter.getAddress() + ", "
+                                                                + newCenter.getDistrictName() + ", " + newCenter.getStateName(),
+                                                        newCenter.getFeeType(), newSessionList.get(j).getDate(), newSessionList.get(j).getVaccine(),
+                                                        newSessionList.get(j).getMinAgeLimit(), newSessionList.get(j).getAvailableCapacity(),
+                                                        newSessionList.get(j).getAvailableCapacityDose1(), newSessionList.get(j).getAvailableCapacityDose2());
+                                                alerts.add(alert);
+                                                count++;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (count > 0) {
+                                displayNotification("Vaccine Available!",
+                                        count + " new sessions in " +
+                                                newCenterList.get(0).getDistrictName() + " are available for vaccination ");
+                                Log.d("testo", "no notifi");
+                            }
+
+                            test.put(code, newCenterList);
+                            Paper.book().write("test31", test);
+                            Paper.book().write("test11", alerts);
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<AppointmentsForSevenResponse> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), "Network Failure! Please check your internet connection and retry", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onFailure(Call<AppointmentsForSevenResponse> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Network Failure! Please check your internet connection and retry", Toast.LENGTH_SHORT).show();
 
-                }
-            });
-            HashMap<String, List<Center>> testD = Paper.book().read("test31");
-            Log.d("test", String.valueOf(testD.size()));
+                    }
+                });
+                HashMap<String, List<Center>> testD = Paper.book().read("test31");
+                Log.d("test", String.valueOf(testD.size()));
 
-            for (HashMap.Entry mapElement : testD.entrySet()) {
-                List<Center> key = (List<Center>) mapElement.getValue();
+                for (HashMap.Entry mapElement : testD.entrySet()) {
+                    List<Center> key = (List<Center>) mapElement.getValue();
 
-                for (Center item : key) {
-                    Log.d("test", item.getName());
+                    for (Center item : key) {
+                        Log.d("test", item.getName());
+                    }
                 }
             }
         }

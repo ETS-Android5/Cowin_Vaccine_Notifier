@@ -11,19 +11,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CowinVaccineNotifier">
-        <activity android:name="io.realworld.android.vaccineslotalert.Activies.OnboardingActivity"></activity>
-        <activity android:name="io.realworld.android.vaccineslotalert.Activies.SplashScreenActivity">
+        <activity android:name=".Activies.PinActivity"></activity>
+        <activity android:name=".Activies.OnboardingActivity" />
+        <activity android:name=".Activies.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="io.realworld.android.vaccineslotalert.Activies.AboutActivity" />
-        <activity android:name="io.realworld.android.vaccineslotalert.Activies.OthersActivity" />
-        <activity android:name="io.realworld.android.vaccineslotalert.Activies.DistrictActivity" />
-        <activity android:name="io.realworld.android.vaccineslotalert.Activies.StateActivity" />
-        <activity android:name="io.realworld.android.vaccineslotalert.Activies.MainActivity"></activity>
+        <activity android:name=".Activies.AboutActivity" />
+        <activity android:name=".Activies.OthersActivity" />
+        <activity android:name=".Activies.DistrictActivity" />
+        <activity android:name=".Activies.StateActivity" />
+        <activity android:name=".Activies.MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

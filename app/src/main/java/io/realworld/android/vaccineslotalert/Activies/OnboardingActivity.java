@@ -53,8 +53,8 @@ public class OnboardingActivity extends AppCompatActivity {
     }
 
     private ArrayList<PaperOnboardingPage> getPages() {
-        PaperOnboardingPage scr1 = new PaperOnboardingPage("Add Location",
-                "Click the + icon and select your state, district and other parameters",
+        PaperOnboardingPage scr1 = new PaperOnboardingPage("App Tutorial",
+                "Click + icon in the App and select your state, district and other parameters",
                 Color.parseColor("#FF00FB"), R.drawable.ic_add_circle, R.drawable.ic_add_key);
         PaperOnboardingPage scr2 = new PaperOnboardingPage("Get Alerts",
                 "You will get notified if any slot will open in your selected location for vaccination. You can see all details of available centers in alert screen",

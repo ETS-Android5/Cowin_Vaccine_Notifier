@@ -1,10 +1,14 @@
 package io.realworld.android.vaccineslotalert.Fragments;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,8 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -23,6 +30,7 @@ import java.util.List;
 import io.paperdb.Paper;
 import io.realworld.android.vaccineslotalert.Activies.AboutActivity;
 import io.realworld.android.vaccineslotalert.Activies.MainActivity;
+import io.realworld.android.vaccineslotalert.Activies.PinActivity;
 import io.realworld.android.vaccineslotalert.Activies.StateActivity;
 import io.realworld.android.vaccineslotalert.Adapters.HomeAdapter;
 import io.realworld.android.vaccineslotalert.Data.Subscription;
@@ -34,6 +42,9 @@ public class HomeFragment extends Fragment {
     HomeAdapter homeAdapter;
     TextView textView;
     FloatingActionButton fab;
+    Dialog dialog;
+    Button disButton;
+    Button pinButton;
     ImageView imageView;
     MainActivity activity;
     @Override
@@ -65,10 +76,32 @@ public class HomeFragment extends Fragment {
 
         fab.setOnClickListener(v -> {
 
-            Intent intent = new Intent(requireContext(), StateActivity.class);
-            startActivity(intent);
+//            AlertDialog mDialog = new AlertDialog.Builder(requireContext())
+//                    .setTitle("Delete")
+//                    .setMessage("Are you sure! You want to unsubscribe this task?")
+//                    .setCancelable(true)
+//                    .setPositiveButton("Search by Pin", (dialog, which) -> {
+//                        Intent intent = new Intent(requireContext(), PinActivity.class);
+//                        startActivity(intent);
+//                    })
+//                    .setNegativeButton("Search by District", (dialog, which) -> {
+//                        Intent intent = new Intent(requireContext(), StateActivity.class);
+//                        startActivity(intent);
+//                    }).show();
 
+           showDialog(getActivity());
         });
+//        disButton = view.findViewById(R.id.search_by_district);
+//        pinButton = view.findViewById(R.id.search_by_pin);
+//        disButton.setOnClickListener(v -> {
+//            Intent intent = new Intent(requireContext(), StateActivity.class);
+//            startActivity(intent);
+//        });
+//
+//        pinButton.setOnClickListener(v -> {
+//            Intent intent = new Intent(requireContext(), PinActivity.class);
+//            startActivity(intent);
+//        });
 
         imageView.setOnClickListener(v -> {
 
@@ -84,5 +117,39 @@ public class HomeFragment extends Fragment {
         textView = view.findViewById(R.id.no_subs);
         fab = view.findViewById(R.id.fab);
         imageView = view.findViewById(R.id.info);
+//        dialog = new Dialog(requireContext());
+//        dialog.setContentView(R.layout.dialog);
+//        dialog.setCancelable(true);
+
+    }
+
+    public void showDialog(Activity activity){
+        final Dialog dialog = new Dialog(activity);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dialog);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        Button dialogButton = (Button) dialog.findViewById(R.id.search_by_pin);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireContext(), PinActivity.class);
+                startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+
+        Button disButton = (Button) dialog.findViewById(R.id.search_by_district);
+        disButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireContext(), StateActivity.class);
+                startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
     }
 }
