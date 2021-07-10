@@ -95,7 +95,7 @@ public class AlertWorker extends Worker {
                     public void onResponse(Call<AppointmentsForSevenResponse> call, Response<AppointmentsForSevenResponse> response) {
                         AppointmentsForSevenResponse appointments = response.body();
                         List<Center> newCenterList = appointments.getCenters();
-                        ;
+
                         if (test.containsKey(code)) {
                             List<Center> centerList = test.get(code);
                             int count = 0;

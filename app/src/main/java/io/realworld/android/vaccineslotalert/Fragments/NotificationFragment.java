@@ -1,5 +1,7 @@
 package io.realworld.android.vaccineslotalert.Fragments;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.paperdb.Paper;
+import io.realworld.android.vaccineslotalert.Activies.PinActivity;
 import io.realworld.android.vaccineslotalert.Activies.StateActivity;
 import io.realworld.android.vaccineslotalert.Adapters.NotificationAdapter;
 import io.realworld.android.vaccineslotalert.Data.Alert;
@@ -43,18 +47,7 @@ public class NotificationFragment extends Fragment {
 
         fab.setOnClickListener(view -> {
 
-            AlertDialog mDialog = new AlertDialog.Builder(requireContext())
-                    .setTitle("Delete")
-                    .setMessage("Are you sure! You want to unsubscribe this task?")
-                    .setCancelable(false)
-                    .setPositiveButton("Search by Pin", (dialog, which) -> {
-                        Toast.makeText(requireContext(), "Work in process", Toast.LENGTH_LONG)
-                                .show();
-                    })
-                    .setNegativeButton("Search by District", (dialog, which) -> {
-                        Intent intent = new Intent(requireContext(), StateActivity.class);
-                        startActivity(intent);
-                    }).show();
+            showDialog(getActivity());
 
         });
 
@@ -106,5 +99,35 @@ public class NotificationFragment extends Fragment {
         textView = view.findViewById(R.id.no_alerts);
         fab = view.findViewById(R.id.fab_alert);
         fab_delete = view.findViewById(R.id.delete_all);
+    }
+
+
+    public void showDialog(Activity activity){
+        final Dialog dialog = new Dialog(activity);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dialog);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        Button dialogButton = (Button) dialog.findViewById(R.id.search_by_pin);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireContext(), PinActivity.class);
+                startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+
+        Button disButton = (Button) dialog.findViewById(R.id.search_by_district);
+        disButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireContext(), StateActivity.class);
+                startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 }

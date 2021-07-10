@@ -118,6 +118,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
                                 notifyDataSetChanged();
 
                             }  else if (districtID == 0L &&  pinCode!=null) {
+                                Log.d("assa", "hhhhhhhh");
                                 List<Integer> ages = subscription.getAges();
                                 List<Integer> doses = subscription.getDoses();
 
