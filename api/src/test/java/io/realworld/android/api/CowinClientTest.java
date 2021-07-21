@@ -46,7 +46,7 @@ public class CowinClientTest {
     @Test
     public void getAppointmentsByCalenderAndPin() throws IOException {
         Response<AppointmentsForSevenResponse> states = cowinClient.api
-                .getAppointmentsForSevenByPin("743291", "07-07-2021", user_agent).execute();
+                .getAppointmentsForSevenByPin("743422", "19-07-2021", user_agent).execute();
         assertNotNull(states.body());
     }
 }
