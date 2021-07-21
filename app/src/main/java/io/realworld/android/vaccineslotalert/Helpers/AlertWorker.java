@@ -471,7 +471,7 @@ public class AlertWorker extends Worker {
                     @Override
                     public void onResponse(Call<AppointmentsForSevenResponse> call, Response<AppointmentsForSevenResponse> response) {
                         AppointmentsForSevenResponse appointments = response.body();
-                        if(appointments != null) {
+                        if (appointments != null) {
                             List<Center> newCenterList = appointments.getCenters();
 
                             if (test.containsKey(code)) {
