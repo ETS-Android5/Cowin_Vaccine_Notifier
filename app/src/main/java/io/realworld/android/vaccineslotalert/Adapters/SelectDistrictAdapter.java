@@ -89,7 +89,9 @@ public class SelectDistrictAdapter extends RecyclerView.Adapter<SelectDistrictAd
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             districts.clear();
-            districts.addAll((List) results.values);
+            if(districts != null) {
+                districts.addAll((List) results.values);
+            }
             notifyDataSetChanged();
         }
     };

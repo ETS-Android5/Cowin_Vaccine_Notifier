@@ -87,7 +87,9 @@ public class SelectStateAdapter extends RecyclerView.Adapter<SelectStateAdapter.
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             states.clear();
-            states.addAll((List) results.values);
+            if(states != null) {
+                states.addAll((List) results.values);
+            }
             notifyDataSetChanged();
         }
     };

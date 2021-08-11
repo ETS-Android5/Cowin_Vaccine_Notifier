@@ -1,5 +1,10 @@
 package io.realworld.android.vaccineslotalert.Activies;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,19 +19,14 @@ import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.concurrent.TimeUnit;
 
 import io.paperdb.Paper;
-import io.realworld.android.vaccineslotalert.Helpers.CurvedBottomNavigationView;
 import io.realworld.android.vaccineslotalert.Helpers.AlertWorker;
+import io.realworld.android.vaccineslotalert.Helpers.CurvedBottomNavigationView;
 import io.realworld.android.vaccineslotalert.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener, NavController.OnDestinationChangedListener{
