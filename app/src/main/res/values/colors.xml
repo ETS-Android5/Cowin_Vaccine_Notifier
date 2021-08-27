@@ -13,5 +13,5 @@
     <color name="dose">#5CFF1F</color>
     <color name="back_ground_add">#FF00FF</color>
     <color name="back_ground_alert">#00FFE6</color>
-
+    <color name="red">#FF0000</color>
 </resources>

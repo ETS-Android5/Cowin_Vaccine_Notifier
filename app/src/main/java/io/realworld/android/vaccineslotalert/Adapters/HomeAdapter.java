@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -50,6 +49,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         Subscription subscription = subscriptions.get(position);
 
         if(subscription.getPin() == null){
+            holder.district.setVisibility(View.VISIBLE);
+            holder.state.setPadding(0, 0, 0, 0);
             holder.state.setText(subscription.getState());
             holder.district.setText(subscription.getDistrict());
         } else {
@@ -84,70 +85,66 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         }
 
 
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog mDialog = new AlertDialog.Builder(activity)
-                        .setTitle("Delete")
-                        .setMessage("Are you sure! You want to unsubscribe this task?")
-                        .setCancelable(false)
-                        .setPositiveButton("Delete", (dialog, which) -> {
-                            long districtID = subscription.getDistrictId();
-                            String pinCode = subscription.getPin();
-                            if (districtID != 0L && pinCode == null) {
-                                long district = districtID;
+        holder.delete.setOnClickListener(v -> {
+            AlertDialog mDialog = new AlertDialog.Builder(activity)
+                    .setTitle("Delete")
+                    .setMessage("Are you sure! You want to unsubscribe this task?")
+                    .setCancelable(false)
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        long districtID = subscription.getDistrictId();
+                        String pinCode = subscription.getPin();
+                        if (districtID != 0L && pinCode == null) {
 
-                                List<Integer> ages = subscription.getAges();
-                                List<Integer> doses = subscription.getDoses();
+                            List<Integer> ages1 = subscription.getAges();
+                            List<Integer> doses1 = subscription.getDoses();
 
-                                StringBuilder builder = new StringBuilder(String.valueOf(district));
-                                for (int a = 0; a < ages.size(); a++) {
-                                    builder.append(ages.get(a));
-                                }
-                                for (int d = 0; d < doses.size(); d++) {
-                                    builder.append(doses.get(d));
-                                }
-                                String code = builder.toString();
-
-                                subscriptions.remove(subscription);
-                                Paper.init(context);
-                                Paper.book().write("subscription", subscriptions);
-                                HashMap<String, List<Center> > centers = Paper.book().read("test31", new HashMap<>());
-                                centers.remove(code);
-                                Paper.book().write("test31", centers);
-                                notifyDataSetChanged();
-
-                            }  else if (districtID == 0L &&  pinCode!=null) {
-                                Log.d("assa", "hhhhhhhh");
-                                List<Integer> ages = subscription.getAges();
-                                List<Integer> doses = subscription.getDoses();
-
-                                StringBuilder builder = new StringBuilder(pinCode);
-                                for (int a = 0; a < ages.size(); a++) {
-                                    builder.append(ages.get(a));
-                                }
-                                for (int d = 0; d < doses.size(); d++) {
-                                    builder.append(doses.get(d));
-                                }
-                                String code = builder.toString();
-
-                                subscriptions.remove(subscription);
-                                Paper.init(context);
-                                Paper.book().write("subscription", subscriptions);
-                                HashMap<String, List<Center> > centers = Paper.book().read("test31", new HashMap<>());
-                                centers.remove(code);
-                                Paper.book().write("test31", centers);
-                                notifyDataSetChanged();
+                            StringBuilder builder = new StringBuilder(String.valueOf(districtID));
+                            for (int a = 0; a < ages1.size(); a++) {
+                                builder.append(ages1.get(a));
                             }
+                            for (int d = 0; d < doses1.size(); d++) {
+                                builder.append(doses1.get(d));
+                            }
+                            String code = builder.toString();
+
+                            subscriptions.remove(subscription);
+                            Paper.init(context);
+                            Paper.book().write("subscription", subscriptions);
+                            HashMap<String, List<Center> > centers = Paper.book().read("test31", new HashMap<>());
+                            centers.remove(code);
+                            Paper.book().write("test31", centers);
+                            notifyDataSetChanged();
+
+                        }  else if (districtID == 0L &&  pinCode!=null) {
+                            Log.d("assa", "hhhhhhhh");
+                            List<Integer> ages1 = subscription.getAges();
+                            List<Integer> doses1 = subscription.getDoses();
+
+                            StringBuilder builder = new StringBuilder(pinCode);
+                            for (int a = 0; a < ages1.size(); a++) {
+                                builder.append(ages1.get(a));
+                            }
+                            for (int d = 0; d < doses1.size(); d++) {
+                                builder.append(doses1.get(d));
+                            }
+                            String code = builder.toString();
+
+                            subscriptions.remove(subscription);
+                            Paper.init(context);
+                            Paper.book().write("subscription", subscriptions);
+                            HashMap<String, List<Center> > centers = Paper.book().read("test31", new HashMap<>());
+                            centers.remove(code);
+                            Paper.book().write("test31", centers);
+                            notifyDataSetChanged();
+                        }
+                        dialog.dismiss();
+                    })
+                    .setNegativeButton("Cancel", new AlertDialog.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                        })
-                        .setNegativeButton("Cancel", new AlertDialog.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).show();
-            }
+                        }
+                    }).show();
         });
     }
 
@@ -156,7 +153,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         return subscriptions.size();
     }
 
-    public class HomeViewHolder extends RecyclerView.ViewHolder {
+    public static class HomeViewHolder extends RecyclerView.ViewHolder {
         TextView state;
         TextView district;
         TextView dose_1, dose_2;

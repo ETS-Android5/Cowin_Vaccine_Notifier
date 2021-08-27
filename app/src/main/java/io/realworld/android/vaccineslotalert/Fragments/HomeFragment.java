@@ -24,7 +24,6 @@ import java.util.List;
 
 import io.paperdb.Paper;
 import io.realworld.android.vaccineslotalert.Activies.AboutActivity;
-import io.realworld.android.vaccineslotalert.Activies.MainActivity;
 import io.realworld.android.vaccineslotalert.Activies.PinActivity;
 import io.realworld.android.vaccineslotalert.Activies.StateActivity;
 import io.realworld.android.vaccineslotalert.Adapters.HomeAdapter;
@@ -43,8 +42,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        return root;
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
@@ -66,9 +64,7 @@ public class HomeFragment extends Fragment {
             recyclerView.setAdapter(homeAdapter);
         }
 
-        fab.setOnClickListener(v -> {
-           showDialog(getActivity());
-        });
+        fab.setOnClickListener(v -> showDialog(getActivity()));
 
         imageView.setOnClickListener(v -> {
 
@@ -92,24 +88,18 @@ public class HomeFragment extends Fragment {
         dialog.setContentView(R.layout.dialog);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        Button dialogButton = (Button) dialog.findViewById(R.id.search_by_pin);
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(requireContext(), PinActivity.class);
-                startActivity(intent);
-                dialog.dismiss();
-            }
+        Button dialogButton = dialog.findViewById(R.id.search_by_pin);
+        dialogButton.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), PinActivity.class);
+            startActivity(intent);
+            dialog.dismiss();
         });
 
-        Button disButton = (Button) dialog.findViewById(R.id.search_by_district);
-        disButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(requireContext(), StateActivity.class);
-                startActivity(intent);
-                dialog.dismiss();
-            }
+        Button disButton = dialog.findViewById(R.id.search_by_district);
+        disButton.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), StateActivity.class);
+            startActivity(intent);
+            dialog.dismiss();
         });
 
         dialog.show();

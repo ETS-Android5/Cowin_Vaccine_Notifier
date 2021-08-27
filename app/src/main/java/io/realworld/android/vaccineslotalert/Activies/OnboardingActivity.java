@@ -1,27 +1,25 @@
 package io.realworld.android.vaccineslotalert.Activies;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.ramotion.paperonboarding.PaperOnboardingFragment;
 import com.ramotion.paperonboarding.PaperOnboardingPage;
-import com.ramotion.paperonboarding.listeners.PaperOnboardingOnRightOutListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import io.paperdb.Paper;
 import io.realworld.android.vaccineslotalert.R;
 
 public class OnboardingActivity extends AppCompatActivity {
-
-    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +28,10 @@ public class OnboardingActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_onboarding);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         Paper.init(this);
-        fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
         PaperOnboardingFragment onBoardingFragment = PaperOnboardingFragment.newInstance(getPages());
 
@@ -41,14 +39,11 @@ public class OnboardingActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.fragment_container, onBoardingFragment);
         fragmentTransaction.commit();
 
-        onBoardingFragment.setOnRightOutListener(new PaperOnboardingOnRightOutListener() {
-            @Override
-            public void onRightOut() {
-                Paper.book().write("first", false);
-                Intent intent = new Intent(OnboardingActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        onBoardingFragment.setOnRightOutListener(() -> {
+            Paper.book().write("first", false);
+            Intent intent = new Intent(OnboardingActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 

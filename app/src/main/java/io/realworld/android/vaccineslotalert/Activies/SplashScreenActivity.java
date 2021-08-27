@@ -11,6 +11,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 import io.realworld.android.vaccineslotalert.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -23,7 +25,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         topAnim = AnimationUtils.loadAnimation(this,R.anim.top);
         bottomAnim = AnimationUtils.loadAnimation(this,R.anim.bottom);
@@ -38,13 +40,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         logo.setAnimation(bottomAnim);
         tag.setAnimation(bottomAnim);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        new Handler().postDelayed(() -> {
+            Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         },2000);
     }
 }

@@ -92,7 +92,7 @@ public class SelectStateAdapter extends RecyclerView.Adapter<SelectStateAdapter.
         }
     };
 
-    public class SelectViewHolder extends RecyclerView.ViewHolder {
+    public static class SelectViewHolder extends RecyclerView.ViewHolder {
 
         TextView state;
 

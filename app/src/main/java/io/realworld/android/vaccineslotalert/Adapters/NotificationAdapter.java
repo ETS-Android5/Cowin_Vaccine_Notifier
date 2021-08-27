@@ -39,7 +39,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public NotificationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.alert_item_layout, parent, false);
-        return new NotificationAdapter.NotificationViewHolder(v);
+        return new NotificationViewHolder(v);
     }
 
     @Override
@@ -57,27 +57,24 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.dose_1.setText(String.valueOf(alert.getDose1()));
             holder.dose_2.setText(String.valueOf(alert.getDose2()));
 
-            holder.delete_alert.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog mDialog = new AlertDialog.Builder(activity)
-                            .setTitle("Delete")
-                            .setMessage("Are you sure! You want to delete this notification?")
-                            .setCancelable(false)
-                            .setPositiveButton("Delete", (dialog, which) -> {
-                                alerts.remove(alert);
-                                Paper.init(context);
-                                Paper.book().write("test11", alerts);
-                                notifyDataSetChanged();
+            holder.delete_alert.setOnClickListener(v -> {
+                AlertDialog mDialog = new AlertDialog.Builder(activity)
+                        .setTitle("Delete")
+                        .setMessage("Are you sure! You want to delete this notification?")
+                        .setCancelable(false)
+                        .setPositiveButton("Delete", (dialog, which) -> {
+                            alerts.remove(alert);
+                            Paper.init(context);
+                            Paper.book().write("test11", alerts);
+                            notifyDataSetChanged();
+                            dialog.dismiss();
+                        })
+                        .setNegativeButton("Cancel", new AlertDialog.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                            })
-                            .setNegativeButton("Cancel", new AlertDialog.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
-                }
+                            }
+                        }).show();
             });
 
             holder.link.setOnClickListener(v ->{
@@ -100,7 +97,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return alerts.size();
     }
 
-    public class NotificationViewHolder extends RecyclerView.ViewHolder {
+    public static class NotificationViewHolder extends RecyclerView.ViewHolder {
         TextView center;
         TextView address;
         TextView date;

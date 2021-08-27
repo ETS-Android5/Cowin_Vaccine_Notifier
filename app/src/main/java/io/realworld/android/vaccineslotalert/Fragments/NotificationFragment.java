@@ -45,11 +45,7 @@ public class NotificationFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_notification, container, false);
         Init(root);
 
-        fab.setOnClickListener(view -> {
-
-            showDialog(getActivity());
-
-        });
+        fab.setOnClickListener(view -> showDialog(getActivity()));
 
         List<Alert> alerts = Paper.book().read("test11", new ArrayList<>());
 
@@ -63,31 +59,24 @@ public class NotificationFragment extends Fragment {
             notificationAdapter = new NotificationAdapter(getContext(), alerts, getActivity());
             recyclerView.setAdapter(notificationAdapter);
         }
-        fab_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                if( alerts.size() > 0) {
+        fab_delete.setOnClickListener(view -> {
 
-                    AlertDialog mDialog = new AlertDialog.Builder(requireContext())
-                            .setTitle("Delete All")
-                            .setMessage("Are you sure! You want to delete all of this notifications?")
-                            .setCancelable(true)
-                            .setPositiveButton("Delete", (dialog, which) -> {
-                                Paper.book().delete("test11");
-                                recyclerView.setVisibility(View.GONE);
-                                textView.setVisibility(View.VISIBLE);
-                                dialog.dismiss();
-                            })
-                            .setNegativeButton("Cancel", new AlertDialog.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
-                } else {
-                    Toast.makeText(requireContext(), "There is no notifications in alert box", Toast.LENGTH_LONG).show();
-                }
+            if( alerts.size() > 0) {
+
+                AlertDialog mDialog = new AlertDialog.Builder(requireContext())
+                        .setTitle("Delete All")
+                        .setMessage("Are you sure! You want to delete all of this notifications?")
+                        .setCancelable(true)
+                        .setPositiveButton("Delete", (dialog, which) -> {
+                            Paper.book().delete("test11");
+                            recyclerView.setVisibility(View.GONE);
+                            textView.setVisibility(View.VISIBLE);
+                            dialog.dismiss();
+                        })
+                        .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).show();
+            } else {
+                Toast.makeText(requireContext(), "There is no notifications in alert box", Toast.LENGTH_LONG).show();
             }
         });
         return root;
@@ -108,24 +97,18 @@ public class NotificationFragment extends Fragment {
         dialog.setContentView(R.layout.dialog);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        Button dialogButton = (Button) dialog.findViewById(R.id.search_by_pin);
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(requireContext(), PinActivity.class);
-                startActivity(intent);
-                dialog.dismiss();
-            }
+        Button dialogButton = dialog.findViewById(R.id.search_by_pin);
+        dialogButton.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), PinActivity.class);
+            startActivity(intent);
+            dialog.dismiss();
         });
 
-        Button disButton = (Button) dialog.findViewById(R.id.search_by_district);
-        disButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(requireContext(), StateActivity.class);
-                startActivity(intent);
-                dialog.dismiss();
-            }
+        Button disButton = dialog.findViewById(R.id.search_by_district);
+        disButton.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), StateActivity.class);
+            startActivity(intent);
+            dialog.dismiss();
         });
 
         dialog.show();

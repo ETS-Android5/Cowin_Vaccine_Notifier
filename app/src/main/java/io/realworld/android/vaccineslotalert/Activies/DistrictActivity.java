@@ -1,5 +1,6 @@
 package io.realworld.android.vaccineslotalert.Activies;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.paperdb.Paper;
 import io.realworld.android.api.CowinClient;
@@ -44,7 +46,7 @@ public class DistrictActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_district);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         statecode = getIntent().getExtras().getLong("statecode");
         Log.e("this", String.valueOf(statecode));
@@ -75,10 +77,11 @@ public class DistrictActivity extends AppCompatActivity {
         Call<DistrictsResponse> call = cowinClient.api.getDistricts(statecode, user_agent);
         call.enqueue(new Callback<DistrictsResponse>() {
             @Override
-            public void onResponse(Call<DistrictsResponse> call, Response<DistrictsResponse> response) {
+            public void onResponse(@NonNull Call<DistrictsResponse> call,
+                                   @NonNull Response<DistrictsResponse> response) {
                 if(response.code() == 200) {
                     DistrictsResponse districtsResponse = response.body();
-                    districts = districtsResponse.getDistricts();
+                    districts = Objects.requireNonNull(districtsResponse).getDistricts();
                     Log.e("testt", districts.get(0).getDistrictName());
                     selectDistrictAdapter.setDistricts(districts);
                     progressBar.setVisibility(View.GONE);
@@ -92,7 +95,7 @@ public class DistrictActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<DistrictsResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<DistrictsResponse> call, @NonNull Throwable t) {
                 progressBar.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
                 searchView.setVisibility(View.GONE);

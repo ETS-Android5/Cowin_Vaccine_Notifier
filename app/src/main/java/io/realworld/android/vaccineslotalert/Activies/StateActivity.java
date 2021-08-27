@@ -1,5 +1,6 @@
 package io.realworld.android.vaccineslotalert.Activies;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.paperdb.Paper;
 import io.realworld.android.api.CowinClient;
@@ -39,7 +41,7 @@ public class StateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_state);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         Init();
 
@@ -70,10 +72,11 @@ public class StateActivity extends AppCompatActivity {
         Call<StatesResponse> call = cowinClient.api.getStates(user_agent);
         call.enqueue(new Callback<StatesResponse>() {
             @Override
-            public void onResponse(Call<StatesResponse> call, Response<StatesResponse> response) {
+            public void onResponse(@NonNull Call<StatesResponse> call,
+                                   @NonNull Response<StatesResponse> response) {
                 if(response.code() == 200){
                     StatesResponse statesResponse = response.body();
-                    states = statesResponse.getStates();
+                    states = Objects.requireNonNull(statesResponse).getStates();
                     Log.d("testt",states.get(0).getStateName());
                     selectStateAdapter.setStates(states);
                     progressBar.setVisibility(View.GONE);
@@ -88,7 +91,7 @@ public class StateActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<StatesResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<StatesResponse> call, @NonNull Throwable t) {
                 progressBar.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
                 searchView.setVisibility(View.GONE);

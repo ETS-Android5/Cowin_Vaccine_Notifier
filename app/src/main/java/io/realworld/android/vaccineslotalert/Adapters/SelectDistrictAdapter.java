@@ -94,7 +94,7 @@ public class SelectDistrictAdapter extends RecyclerView.Adapter<SelectDistrictAd
         }
     };
 
-    public class SelectViewHolder extends RecyclerView.ViewHolder {
+    public static class SelectViewHolder extends RecyclerView.ViewHolder {
 
         TextView district;
 
