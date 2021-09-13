@@ -14,6 +14,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import io.realworld.android.vaccineslotalert.R;
 
+/**
+ * Custom CurvedBottomNavigationView for showing add + button
+ */
 public class CurvedBottomNavigationView extends BottomNavigationView {
     private Path mPath;
     private Paint mPaint;
@@ -53,6 +56,9 @@ public class CurvedBottomNavigationView extends BottomNavigationView {
         init();
     }
 
+    /**
+     * For initialize UI elements
+     */
     private void init() {
         mPath = new Path();
         mPaint = new Paint();

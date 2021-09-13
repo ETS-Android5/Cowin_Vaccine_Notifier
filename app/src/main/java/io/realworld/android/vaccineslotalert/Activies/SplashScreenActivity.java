@@ -15,6 +15,9 @@ import java.util.Objects;
 
 import io.realworld.android.vaccineslotalert.R;
 
+/**
+ * Splash Screen
+ */
 public class SplashScreenActivity extends AppCompatActivity {
 
     Animation topAnim, bottomAnim;

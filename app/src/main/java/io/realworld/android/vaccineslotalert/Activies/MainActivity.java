@@ -30,7 +30,10 @@ import io.realworld.android.vaccineslotalert.Helpers.CurvedBottomNavigationView;
 import io.realworld.android.vaccineslotalert.Helpers.AlertWorker;
 import io.realworld.android.vaccineslotalert.R;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener, NavController.OnDestinationChangedListener{
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener,
+        BottomNavigationView.OnNavigationItemSelectedListener,
+        NavController.OnDestinationChangedListener{
 
     private static final String TAG = "MainActivity";
     public NavController mNavController;
@@ -53,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Init();
 
 
+            /*
+            Starts periodic fetching data and saving to the database per 15 minute
+             */
             if (Paper.book().read("work_start", false)) {
                 WorkManager.getInstance().cancelAllWorkByTag("work");
 
@@ -99,6 +105,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    /**
+     * For initialize UI elements and components
+     */
     private void Init() {
         Paper.init(this);
         mBottomNavigationView = findViewById(R.id.bottom_nav_view);
@@ -128,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 || super.onSupportNavigateUp();
     }
 
+    //TODO: Yet to implement
     @Override
     public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
         Log.d(TAG, "onDestinationChanged: starts");

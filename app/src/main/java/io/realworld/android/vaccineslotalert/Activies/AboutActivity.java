@@ -10,6 +10,9 @@ import java.util.Objects;
 
 import io.realworld.android.vaccineslotalert.R;
 
+/**
+ * Activity for letting user know about the app and connecting user with the developers
+ */
 public class AboutActivity extends AppCompatActivity {
 
     @Override

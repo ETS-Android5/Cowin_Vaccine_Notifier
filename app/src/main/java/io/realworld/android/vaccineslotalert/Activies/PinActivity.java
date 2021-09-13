@@ -15,6 +15,9 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import io.realworld.android.vaccineslotalert.R;
 
+/**
+ * For getting the Pincode
+ */
 public class PinActivity extends AppCompatActivity {
 
     TextInputEditText editText;
@@ -45,6 +48,9 @@ public class PinActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * For initialize UI elements
+     */
     private void Init() {
         editText = findViewById(R.id.pin_edit_text);
         pinButton = findViewById(R.id.pin_button);

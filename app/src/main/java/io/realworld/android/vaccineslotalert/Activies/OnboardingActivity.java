@@ -19,6 +19,9 @@ import java.util.Objects;
 import io.paperdb.Paper;
 import io.realworld.android.vaccineslotalert.R;
 
+/**
+ * Activity for on board for the first time
+ */
 public class OnboardingActivity extends AppCompatActivity {
 
     @Override

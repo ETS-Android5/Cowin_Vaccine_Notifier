@@ -19,6 +19,10 @@ import io.paperdb.Paper;
 import io.realworld.android.vaccineslotalert.Data.Subscription;
 import io.realworld.android.vaccineslotalert.R;
 
+/**
+ * User can select other parameters like age and dose from here
+ * From here all data will send to the Workmanager
+ */
 public class OthersActivity extends AppCompatActivity {
 
     long districtId;
@@ -91,6 +95,14 @@ public class OthersActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Check new subscription is already there in the list or not
+     * @param subscriptions Current list of subscriptions
+     * @param subscription new subscription
+     * @param state state
+     * @param pincode pincode
+     * @return subscription contains or not
+     */
     private boolean contains(List<Subscription> subscriptions, Subscription subscription,
                              String state, String pincode){
 
@@ -112,6 +124,9 @@ public class OthersActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * For initialize UI elements
+     */
     private void Init() {
         Paper.init(this);
         done = findViewById(R.id.done);

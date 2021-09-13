@@ -30,6 +30,9 @@ import io.realworld.android.vaccineslotalert.Adapters.HomeAdapter;
 import io.realworld.android.vaccineslotalert.Data.Subscription;
 import io.realworld.android.vaccineslotalert.R;
 
+/**
+ * For showing area subscriptions
+ */
 public class HomeFragment extends Fragment {
 
     RecyclerView recyclerView;
@@ -74,6 +77,9 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * For initialize UI elements
+     */
     private void Init(View view) {
         Paper.init(view.getContext());
         recyclerView = view.findViewById(R.id.subscription_recycler_view);

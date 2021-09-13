@@ -30,6 +30,9 @@ import io.realworld.android.vaccineslotalert.Adapters.NotificationAdapter;
 import io.realworld.android.vaccineslotalert.Data.Alert;
 import io.realworld.android.vaccineslotalert.R;
 
+/**
+ * For showing detailed information about vaccine slots in respected area
+ */
 public class NotificationFragment extends Fragment {
 
     RecyclerView recyclerView;
@@ -82,6 +85,9 @@ public class NotificationFragment extends Fragment {
         return root;
     }
 
+    /**
+     * For initialize UI elements
+     */
     private void Init(View view) {
         Paper.init(view.getContext());
         recyclerView = view.findViewById(R.id.alert_recycler_view);

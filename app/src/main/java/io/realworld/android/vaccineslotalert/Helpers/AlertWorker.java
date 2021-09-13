@@ -43,6 +43,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Runs per 15 minute
+ * Fetches vaccine data according to the district or pincode from govt portal
+ * Tally the new data with the data of database
+ * If vaccine increases show user a notification about it
+ * Save the new data to the database
+ */
 public class AlertWorker extends Worker {
     Context context;
 
@@ -839,30 +846,48 @@ public class AlertWorker extends Worker {
         return Result.success();
     }
 
-    private int getIndexCenterByProperty(int yourString, List<Center> objList) {
-        for (int i = 0; i < objList.size(); i++) {
-            if (objList.get(i) !=null && objList.get(i).getCenterId() == yourString ) {
+    /**
+     * Get index of a center in the list
+     * @param centerID
+     * @param centerList
+     * @return
+     */
+    private int getIndexCenterByProperty(int centerID, List<Center> centerList) {
+        for (int i = 0; i < centerList.size(); i++) {
+            if (centerList.get(i) !=null && centerList.get(i).getCenterId() == centerID ) {
                 return i;
             }
         }
         return -1;// not there is list
     }
 
-    private int getIndexSessionByProperty(String yourString, List<SessionForSeven> objList) {
-        for (int i = 0; i < objList.size(); i++) {
-            if (objList.get(i) !=null && objList.get(i).getSessionId().equals(yourString)) {
+    /**
+     * Get index of a session in the list
+     * @param sessionID
+     * @param sessionList
+     * @return
+     */
+    private int getIndexSessionByProperty(String sessionID, List<SessionForSeven> sessionList) {
+        for (int i = 0; i < sessionList.size(); i++) {
+            if (sessionList.get(i) !=null && sessionList.get(i).getSessionId().equals(sessionID)) {
                 return i;
             }
         }
         return -1;// not there is list
     }
 
-    public boolean equal (Center c, Center o) {
-        List<SessionForSeven> sessionForSevenList = c.getSessions();
-        List<SessionForSeven> sessions = o.getSessions();
+    /**
+     * Check Center is equal or not
+     * @param newCenter
+     * @param oldCenter
+     * @return is the center equal
+     */
+    public boolean equal (Center newCenter, Center oldCenter) {
+        List<SessionForSeven> sessionForSevenList = newCenter.getSessions();
+        List<SessionForSeven> sessions = oldCenter.getSessions();
         //Can be a bug
-        int s1 = c.getCenterId();
-        int s2 = o.getCenterId();
+        int s1 = newCenter.getCenterId();
+        int s2 = oldCenter.getCenterId();
         Log.d("testo", s1+" "+ s2);
         for(int i=0; i<sessionForSevenList.size(); i++){
 
@@ -881,7 +906,12 @@ public class AlertWorker extends Worker {
         return true;
     }
 
-    private void displayNotification(String task, String desc){
+    /**
+     * Show notification about vaccine increase in respected area
+     * @param task Title of notification
+     * @param description Description of notification
+     */
+    private void displayNotification(String task, String description){
 
         NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -899,7 +929,7 @@ public class AlertWorker extends Worker {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "coding")
                 .setContentTitle(task)
-                .setContentText(desc)
+                .setContentText(description)
                 .setAutoCancel(true)
                 .setContentIntent(resultPendingIntent)
                 .setPriority(Notification.PRIORITY_HIGH)
@@ -908,7 +938,7 @@ public class AlertWorker extends Worker {
                 .setSmallIcon(R.drawable.ic_notification);
 
         Notification notification = builder.setStyle(new NotificationCompat.BigTextStyle()
-                .bigText(desc))
+                .bigText(description))
                 .build();
 
         Random r = new Random();
@@ -917,6 +947,9 @@ public class AlertWorker extends Worker {
 
     }
 
+    /**
+     * Play notification sound
+     */
     public void playNotificationSound() {
         try {
             Uri alarmSound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/raw/notification");

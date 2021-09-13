@@ -28,6 +28,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Fetches data from govt portal.
+ * Displays all districts according to the state id.
+ */
 public class DistrictActivity extends AppCompatActivity {
 
     String state;
@@ -104,6 +108,9 @@ public class DistrictActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * For initialize UI elements
+     */
     private void Init() {
         Paper.init(this);
         progressBar = findViewById(R.id.progressBar);

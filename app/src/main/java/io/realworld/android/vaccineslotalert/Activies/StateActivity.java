@@ -27,6 +27,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Fetches data from govt portal.
+ * Displays all states
+ */
 public class StateActivity extends AppCompatActivity {
 
     ProgressBar progressBar;
@@ -101,6 +105,9 @@ public class StateActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * For initialize UI elements
+     */
     private void Init() {
         Paper.init(this);
         progressBar = findViewById(R.id.progressBar);

@@ -22,6 +22,9 @@ import io.realworld.android.api.models.Center;
 import io.realworld.android.vaccineslotalert.Data.Subscription;
 import io.realworld.android.vaccineslotalert.R;
 
+/**
+ * Show data as a list in a view recycling manner
+ */
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder> {
     Context context;
     List<Subscription> subscriptions;
@@ -153,6 +156,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         return subscriptions.size();
     }
 
+    /**
+     * Holding the view for data
+     */
     public static class HomeViewHolder extends RecyclerView.ViewHolder {
         TextView state;
         TextView district;
